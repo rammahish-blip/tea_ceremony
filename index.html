@@ -951,7 +951,7 @@
     <!-- TUTORIAL -->
     <div class="screen" id="s-tut">
       <div class="tut-hdr">
-        <div class="tut-ttl">how to play</div>
+        <div class="tut-ttl">the tea ceremony</div>
         <div class="tut-skip" onclick="finishTut()">skip</div>
       </div>
       <div class="tut-dots">
@@ -1116,11 +1116,13 @@
             </text>
           </svg>
         </div>
-        <div class="tut-h">each pick is one turn</div>
+        <div class="tut-h">tea flows clockwise</div>
         <div class="tut-p">
-          Tap any <b>amber vault</b>. All its gems drop one-by-one
-          <b>clockwise around the loop</b>. That counts as your full turn. You
-          have a limited number of picks — plan ahead to hit your target.
+          Choose a <b>tea cup</b> to begin the pour.
+          Tea flows <b>clockwise through the ceremony</b>,
+          filling each cup one-by-one.
+          Each pour is a full turn —
+          plan carefully before serving the tea.
         </div>
       </div>
       <div class="tut-step" id="t1">
@@ -1279,9 +1281,12 @@
         </div>
         <div class="tut-h">collect across the gap</div>
         <div class="tut-p">
-          After your last gem drops — if the <b>next vault is empty</b> and the
-          vault after has gems, you <b>collect them all!</b> If the next vault
-          has gems, the turn ends with no collect. Plan your drops carefully.
+          When the final pour lands —
+          if the next cup is empty,
+          the tea continues across the gap
+          and <b>serves the following cup</b>.
+          Predicting these moments is the heart
+          of the ceremony.
         </div>
       </div>
       <div class="tut-step" id="t2">
@@ -1423,12 +1428,13 @@
             </text>
           </svg>
         </div>
-        <div class="tut-h">mystery vaults</div>
+        <div class="tut-h">hidden tea cups</div>
         <div class="tut-p">
-          Some levels have <b style="color: var(--pu)">mystery vaults</b> — you
-          can't see how many gems are inside. Tap them anyway —
-          <b>the count reveals the moment you pick</b>, then gems drop as
-          normal. Risk it or play safe — your call.
+          Some tea cups conceal their contents.
+          Their tea level is revealed
+          only when the pour begins.
+          Trust your intuition —
+          or embrace the uncertainty.
         </div>
       </div>
       <div class="tut-nav">
@@ -1463,7 +1469,9 @@
           <button class="rst-btn" onclick="doReset()">reset</button>
         </div>
       </div>
-      <div class="map-sub">each pick is a turn · collect across the gap</div>
+      <div class="map-sub">
+        tea flows clockwise · Tea Insight guides early ceremonies
+      </div>
       <div class="lvl-grid" id="level-grid"></div>
       <div
         style="
@@ -1547,11 +1555,27 @@
           <div class="stat-v" id="g-turns">—</div>
         </div>
       </div>
+
+      <div
+  id="insight-note"
+  style="
+    text-align:center;
+    font-size:11px;
+    color:var(--fa);
+    margin-bottom:10px;
+    letter-spacing:.02em;
+  "
+>
+  🍃 Tea Insight reveals future pours
+</div>
+
       <div class="brd-wrap">
         <svg id="bsvg"></svg>
         <div id="board"></div>
       </div>
-      <div id="status">tap an amber vault — each pick is one turn</div>
+      <div id="status">
+        tap a tea cup — Tea Insight reveals the flow
+      </div>
     </div>
 
     <!-- CONFETTI -->
@@ -3346,6 +3370,13 @@ board[idx] = 0;
         const lv = LEVELS.find((l) => l.id === id);
         if (!lv || !unlocked(id)) return;
         curLv = lv;
+        const note = document.getElementById('insight-note');
+
+if (lv.id <= 15) {
+  note.style.display = 'block';
+} else {
+  note.style.display = 'none';
+}
         board = [...lv.gems];
         score = 0;
         turnsLeft = lv.turns;

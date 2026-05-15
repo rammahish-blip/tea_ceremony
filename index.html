@@ -1,0 +1,3483 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Gem Loop</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      :root {
+        --bg: #f4efe6;
+        --sf: #fbf7f0;
+        --sf2: #e8dfd1;
+        --br: #d4c4ae;
+
+        --tx: #2b2118;
+        --mu: #7d6b57;
+        --fa: #b8a894;
+
+        --am: #9c6b2f;
+        --am-bg: #f6e9d2;
+        --am-br: #c79a5b;
+
+        --gn: #5d7155;
+        --gn-bg: #e6efe1;
+        --gn-br: #8fa283;
+
+        --pu: #6f5b75;
+        --pu-bg: #eee8f1;
+        --pu-br: #9d8aa7;
+      }
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background: linear-gradient(to bottom, #f8f4ed, #efe5d6);
+        color: var(--tx);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+      .screen {
+        width: 100%;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 28px 20px 40px;
+        display: none;
+        flex-direction: column;
+      }
+      .screen.active {
+        display: flex;
+      }
+
+      /* TITLE */
+      #s-title {
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .t-word {
+        font-family: 'Fraunces', serif;
+        font-size: 64px;
+        font-weight: 700;
+        letter-spacing: -2px;
+        line-height: 1;
+      }
+      .t-sub {
+        font-size: 13px;
+        color: var(--mu);
+        margin-top: 8px;
+        letter-spacing: 0.04em;
+      }
+      .t-gems {
+        display: flex;
+        gap: 8px;
+        margin: 24px 0;
+        justify-content: center;
+      }
+      .t-gem {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--sf);
+        border: 1.5px solid var(--br);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Fraunces', serif;
+        font-size: 17px;
+        font-weight: 600;
+        color: var(--mu);
+      }
+      .t-gem.a {
+        background: var(--am-bg);
+        border-color: var(--am-br);
+        color: var(--am);
+      }
+      .t-gem.g {
+        background: var(--gn-bg);
+        border-color: var(--gn-br);
+        color: var(--gn);
+      }
+      .btn-play {
+        background: var(--am);
+        color: #fff;
+        border: none;
+        border-radius: 14px;
+        padding: 16px 48px;
+        font-size: 17px;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .t-note {
+        font-size: 11px;
+        color: var(--fa);
+        margin-top: 14px;
+      }
+
+      /* TUTORIAL */
+      #s-tut {
+        gap: 0;
+      }
+      .tut-hdr {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .tut-ttl {
+        font-family: 'Fraunces', serif;
+        font-size: 22px;
+        font-weight: 600;
+      }
+      .tut-skip {
+        font-size: 13px;
+        color: var(--mu);
+        cursor: pointer;
+        padding: 4px 10px;
+        border-radius: 6px;
+        border: 1px solid var(--br);
+      }
+      .tut-dots {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 20px;
+      }
+      .tut-dot {
+        width: 28px;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--sf2);
+      }
+      .tut-dot.on {
+        background: var(--am);
+      }
+      .tut-step {
+        display: none;
+      }
+      .tut-step.on {
+        display: block;
+      }
+      .tut-illus {
+        background: var(--sf);
+        border: 1px solid var(--br);
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: center;
+      }
+      .tut-h {
+        font-family: 'Fraunces', serif;
+        font-size: 19px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .tut-p {
+        font-size: 13px;
+        color: var(--mu);
+        line-height: 1.75;
+      }
+      .tut-p b {
+        color: var(--tx);
+        font-weight: 500;
+      }
+      .tut-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+        padding-top: 16px;
+      }
+      .btn-gh {
+        background: none;
+        border: 1.5px solid var(--br);
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-family: 'DM Sans', sans-serif;
+        color: var(--mu);
+        cursor: pointer;
+      }
+      .btn-nx {
+        background: var(--am);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 24px;
+        font-size: 14px;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+      }
+
+      /* MAP */
+      #s-map {
+        gap: 0;
+      }
+      .map-hdr {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 4px;
+      }
+      .map-ttl {
+        font-family: 'Fraunces', serif;
+        font-size: 26px;
+        font-weight: 600;
+      }
+      .map-btns {
+        display: flex;
+        gap: 6px;
+      }
+      .rst-btn {
+        font-size: 11px;
+        color: var(--fa);
+        background: none;
+        border: 1px solid var(--br);
+        border-radius: 6px;
+        padding: 4px 10px;
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+      }
+      .map-sub {
+        font-size: 12px;
+        color: var(--mu);
+        margin-bottom: 18px;
+      }
+      .lvl-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+      }
+      .lvl-nd {
+        aspect-ratio: 1;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1.5px solid var(--br);
+        background: var(--sf);
+        transition: transform 0.12s;
+        position: relative;
+      }
+      .lvl-nd.open {
+        border-color: var(--am-br);
+        cursor: pointer;
+      }
+      .lvl-nd.open:active {
+        transform: scale(0.96);
+      }
+      .lvl-nd.done {
+        border-color: var(--gn-br);
+        cursor: pointer;
+      }
+      .lvl-nd.done:active {
+        transform: scale(0.96);
+      }
+      .lvl-nd.locked {
+        opacity: 0.38;
+        pointer-events: none;
+        background: var(--sf2);
+      }
+      .lvl-nd.challenge {
+        border-color: #e8a83a;
+        background: #fffbf0;
+      }
+      .lvl-nd.challenge.done {
+        border-color: var(--gn-br);
+        background: var(--gn-bg);
+      }
+      .ln-num {
+        font-family: 'Fraunces', serif;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .ln-st {
+        font-size: 9px;
+        letter-spacing: 1px;
+        margin-top: 2px;
+      }
+      .ln-st.has {
+        color: var(--am-br);
+      }
+      .ln-st.no {
+        color: var(--fa);
+      }
+      .ln-badge {
+        font-size: 8px;
+        font-weight: 600;
+        padding: 1px 4px;
+        border-radius: 3px;
+        margin-top: 2px;
+        background: #fef3df;
+        color: var(--am);
+        border: 1px solid var(--am-br);
+      }
+
+      /* GAME */
+      #s-game {
+        padding-top: 18px;
+        gap: 0;
+      }
+      .g-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .g-bk {
+        background: none;
+        border: 1px solid var(--br);
+        border-radius: 8px;
+        padding: 5px 12px;
+        font-size: 12px;
+        color: var(--mu);
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+      }
+      .g-nm {
+        font-family: 'Fraunces', serif;
+        font-size: 15px;
+        font-weight: 600;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .g-chal {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--am);
+        background: var(--am-bg);
+        border: 1px solid var(--am-br);
+        border-radius: 4px;
+        padding: 2px 6px;
+      }
+      .stats {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 8px;
+      }
+      .stat {
+        flex: 1;
+        background: var(--sf);
+        border: 1px solid var(--br);
+        border-radius: 10px;
+        padding: 7px 8px;
+        text-align: center;
+      }
+      .stat-l {
+        font-size: 9px;
+        color: var(--fa);
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .stat-v {
+        font-family: 'Fraunces', serif;
+        font-size: 19px;
+        font-weight: 600;
+        margin-top: 1px;
+      }
+      .stat-v.a {
+        color: var(--am);
+      }
+      .stat-v.g {
+        color: var(--gn);
+      }
+      .brd-wrap {
+        position: relative;
+
+        width: 100%;
+
+        background: linear-gradient(to bottom, #f5ead8 0%, #ead8bc 100%);
+
+        border: 1.5px solid #d1b894;
+
+        border-radius: 34px;
+
+        box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.38),
+          inset 0 -4px 12px rgba(120, 90, 40, 0.05),
+          0 10px 30px rgba(80, 60, 30, 0.06);
+
+        padding: 26px 16px 18px;
+
+        overflow: hidden;
+      }
+      .brd-wrap.flowing {
+        box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.24),
+          0 10px 28px rgba(80, 60, 30, 0.08), 0 0 20px rgba(255, 214, 120, 0.1);
+      }
+
+      .groove {
+        position: absolute;
+
+        background: linear-gradient(
+          180deg,
+          rgba(205, 185, 150, 0.36),
+          rgba(244, 232, 210, 0.92),
+          rgba(205, 185, 150, 0.36)
+        );
+
+        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.34),
+          inset 0 -1px 3px rgba(120, 90, 50, 0.08);
+
+        opacity: 0.88;
+
+        transition: background 0.22s ease, box-shadow 0.22s ease,
+          opacity 0.22s ease, filter 0.22s ease;
+
+        z-index: 2;
+      }
+      /* TOP */
+      .groove.g-top {
+        left: 50px;
+        right: 50px;
+        top: 18px;
+
+        height: 14px;
+
+        border-radius: 14px;
+      }
+
+      /* RIGHT */
+      .groove.g-right {
+        top: 52px;
+        bottom: 52px;
+        right: 18px;
+
+        width: 14px;
+
+        border-radius: 14px;
+      }
+
+      /* BOTTOM */
+      .groove.g-bottom {
+        left: 50px;
+        right: 50px;
+        bottom: 18px;
+
+        height: 14px;
+
+        border-radius: 14px;
+      }
+
+      /* LEFT */
+      .groove.g-left {
+        top: 52px;
+        bottom: 52px;
+        left: 18px;
+
+        width: 14px;
+
+        border-radius: 14px;
+      }
+
+      /* ACTIVE SEGMENT */
+      .groove.active {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 206, 120, 0.82),
+          rgba(255, 240, 205, 1),
+          rgba(255, 206, 120, 0.82)
+        );
+
+        box-shadow: 0 0 10px rgba(255, 214, 120, 0.2),
+          0 0 20px rgba(255, 214, 120, 0.1),
+          inset 0 1px 2px rgba(255, 255, 255, 0.24);
+
+        filter: saturate(1.08);
+
+        opacity: 1;
+      }
+
+      .groove.fading {
+        opacity: 0.55;
+      }
+
+      #board {
+        position: relative;
+        width: 100%;
+      }
+      #bsvg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        pointer-events: none;
+      }
+
+      .flow-dot {
+        position: absolute;
+
+        width: 12px;
+        height: 12px;
+
+        border-radius: 50%;
+
+        background: radial-gradient(
+          circle at 35% 35%,
+          rgba(255, 248, 228, 0.96) 0%,
+          rgba(214, 170, 96, 0.92) 42%,
+          rgba(156, 104, 42, 0.9) 100%
+        );
+
+        box-shadow: 0 0 8px rgba(214, 170, 96, 0.18),
+          0 0 16px rgba(214, 170, 96, 0.08);
+
+        pointer-events: none;
+
+        z-index: 20;
+
+        transform: translate(-50%, -50%) scale(0.88);
+
+        opacity: 0.78;
+
+        transition: left 0.16s linear, top 0.16s linear, opacity 0.16s linear,
+          transform 0.22s ease;
+      }
+      #status {
+        font-size: 12px;
+        color: var(--mu);
+        text-align: center;
+        min-height: 18px;
+        margin: 8px 4px;
+      }
+
+      /* VAULTS */
+      .v {
+        position: absolute;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        transform-origin: center center;
+
+        overflow: visible;
+
+        pointer-events: auto;
+
+        transition: transform 0.18s ease;
+      }
+      .cup-svg {
+        position: absolute;
+
+        width: 132%;
+        height: 132%;
+
+        left: -16%;
+        top: -18%;
+
+        display: block;
+
+        overflow: visible;
+
+        z-index: 0;
+
+        pointer-events: none;
+      }
+
+      .v-label {
+        position: absolute;
+
+        top: 56%;
+        left: 50%;
+
+        transform: translate(-50%, -50%);
+
+        z-index: 3;
+
+        font-size: 18px;
+        font-weight: 600;
+
+        color: #493525;
+
+        pointer-events: none;
+      }
+
+      .v.empty {
+        opacity: 0.92;
+      }
+
+      .v.pickable {
+        cursor: pointer;
+
+        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+      }
+
+      .v.mystery .cup-svg {
+        filter: drop-shadow(0 0 4px rgba(130, 95, 255, 0.16))
+          drop-shadow(0 0 10px rgba(130, 95, 255, 0.08));
+
+        animation: mystGlow 2.8s ease-in-out infinite;
+      }
+
+      .v.pickable:hover .cup-svg {
+        filter: drop-shadow(0 8px 16px rgba(40, 60, 30, 0.1)) brightness(1.03);
+      }
+
+      .v.preview {
+        transform: scale(1.04);
+
+        z-index: 12;
+      }
+
+      .v.preview-final {
+        transform: scale(1.07);
+
+        z-index: 14;
+      }
+
+      .v.preview .cup-svg {
+        filter: drop-shadow(0 6px 14px rgba(70, 90, 60, 0.1)) brightness(1.04);
+      }
+
+      .v.preview-final .cup-svg {
+        filter: drop-shadow(0 8px 18px rgba(196, 123, 16, 0.18))
+          drop-shadow(0 0 22px rgba(196, 123, 16, 0.1)) brightness(1.08);
+      }
+
+      .v.hidden:active {
+        scale: 1.08;
+      }
+      .v.hreveal {
+        border: 2px solid var(--pu-br);
+        background: var(--pu-bg);
+        animation: reveal 0.45s ease-out forwards;
+      }
+      .v.source {
+        color: #8a5000;
+
+        animation: cupLift 0.45s ease-in-out infinite alternate;
+      }
+      .v.dropping {
+        color: #8a5000;
+      }
+      .v.trail {
+        opacity: 0.5;
+      }
+
+      .v.preview .v-label,
+      .v.preview-final .v-label {
+        opacity: 0.82;
+      }
+
+      .v.lastdrop {
+        color: #8a5000;
+      }
+      .v.collected {
+        color: #5d7155;
+      }
+      .v.nocollect {
+        opacity: 0.5;
+      }
+      @keyframes hpulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 3px var(--pu-bg);
+        }
+        50% {
+          box-shadow: 0 0 0 8px transparent;
+        }
+      }
+      @keyframes reveal {
+        0% {
+          transform: scale(1.25);
+        }
+        60% {
+          transform: scale(0.95);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes mystGlow {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 4px rgba(130, 95, 255, 0.14))
+            drop-shadow(0 0 10px rgba(130, 95, 255, 0.06));
+        }
+
+        50% {
+          filter: drop-shadow(0 0 8px rgba(130, 95, 255, 0.22))
+            drop-shadow(0 0 16px rgba(130, 95, 255, 0.1));
+        }
+      }
+
+      .v.mystery {
+        overflow: visible;
+
+        z-index: 20;
+      }
+
+      /* BADGES */
+      .badge {
+        position: absolute;
+        border-radius: 20px;
+        padding: 2px 9px;
+        font-size: 11px;
+        font-weight: 500;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 10;
+        border: 1px solid;
+        opacity: 0;
+        transform: translateY(4px) translateX(-50%);
+        transition: opacity 0.28s, transform 0.28s;
+      }
+      .badge.show {
+        opacity: 1;
+        transform: translateY(0) translateX(-50%);
+      }
+      .badge.stop {
+        background: var(--am-bg);
+        border-color: var(--am-br);
+        color: #8a5000;
+      }
+      .badge.empty {
+        background: var(--sf2);
+        border-color: var(--br);
+        color: var(--mu);
+      }
+      .badge.collect {
+        background: var(--gn-bg);
+        border-color: var(--gn-br);
+        color: var(--gn);
+        font-weight: 600;
+        font-size: 12px;
+      }
+      .badge.miss {
+        background: var(--sf2);
+        border-color: var(--br);
+        color: var(--fa);
+      }
+      .badge.rev {
+        background: var(--pu-bg);
+        border-color: var(--pu-br);
+        color: var(--pu);
+        font-weight: 600;
+      }
+
+      /* CONFETTI */
+      #confetti-wrap {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        pointer-events: none;
+      }
+      #confetti-wrap.show {
+        display: block;
+      }
+      #confetti-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* LEVEL COMPLETE */
+      #lc-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      #lc-overlay.show {
+        display: flex;
+      }
+      .lc-bg {
+        position: absolute;
+        inset: 0;
+        background: rgba(20, 14, 4, 0.5);
+      }
+      .lc-card {
+        position: relative;
+        background: var(--sf);
+        border-radius: 20px;
+        padding: 32px 28px;
+        width: 100%;
+        max-width: 340px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(20, 14, 4, 0.3);
+        animation: cardpop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+      @keyframes cardpop {
+        from {
+          transform: scale(0.7);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .lc-emoji {
+        font-size: 52px;
+        margin-bottom: 8px;
+        display: block;
+      }
+      .lc-ttl {
+        font-family: 'Fraunces', serif;
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .lc-sub {
+        font-size: 13px;
+        color: var(--mu);
+        margin-bottom: 16px;
+      }
+      .lc-stars {
+        font-size: 34px;
+        letter-spacing: 6px;
+        color: var(--am-br);
+        margin-bottom: 20px;
+      }
+      .lc-btns {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .lc-btn {
+        padding: 10px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1.5px solid var(--br);
+        background: var(--sf);
+        color: var(--mu);
+      }
+      .lc-btn.primary {
+        background: var(--am);
+        border-color: var(--am);
+        color: #fff;
+      }
+
+      @keyframes teaPulse {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 rgba(120, 170, 120, 0);
+        }
+
+        50% {
+          transform: scale(1.018);
+          box-shadow: 0 0 18px rgba(120, 170, 120, 0.16);
+        }
+
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 rgba(120, 170, 120, 0);
+        }
+      }
+
+      @keyframes teaShimmer {
+        0% {
+          filter: brightness(1);
+        }
+        50% {
+          filter: brightness(1.06);
+        }
+        100% {
+          filter: brightness(1);
+        }
+      }
+
+      @keyframes cupLift {
+        0% {
+          scale: 1;
+        }
+
+        100% {
+          scale: 1.02;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- TITLE -->
+    <div class="screen active" id="s-title">
+      <div
+        style="
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <div class="t-word">Tea Ceremony Loop</div>
+        <div class="t-sub">a meditative tea ritual puzzle</div>
+        <div class="t-gems">
+          <div class="t-gem">3</div>
+          <div class="t-gem">0</div>
+          <div class="t-gem a">4</div>
+          <div class="t-gem">0</div>
+          <div class="t-gem g">2</div>
+        </div>
+        <button class="btn-play" onclick="startFromTitle()">play</button>
+        <div class="t-note">
+          100 ceremonies · each pour is a move · calm strategy
+        </div>
+      </div>
+    </div>
+
+    <!-- TUTORIAL -->
+    <div class="screen" id="s-tut">
+      <div class="tut-hdr">
+        <div class="tut-ttl">how to play</div>
+        <div class="tut-skip" onclick="finishTut()">skip</div>
+      </div>
+      <div class="tut-dots">
+        <div class="tut-dot on" id="d0"></div>
+        <div class="tut-dot" id="d1"></div>
+        <div class="tut-dot" id="d2"></div>
+      </div>
+      <div class="tut-step on" id="t0">
+        <div class="tut-illus">
+          <svg width="280" height="108" viewBox="0 0 280 108">
+            <defs>
+              <marker
+                id="ma"
+                markerWidth="7"
+                markerHeight="5"
+                refX="6"
+                refY="2.5"
+                orient="auto"
+              >
+                <polygon points="0 0,7 2.5,0 5" fill="#C47B1088" />
+              </marker>
+            </defs>
+            <rect
+              x="18"
+              y="18"
+              width="244"
+              height="72"
+              rx="28"
+              fill="none"
+              stroke="#D8CCBA"
+              stroke-width="1.5"
+            />
+            <line
+              x1="108"
+              y1="90"
+              x2="148"
+              y2="90"
+              stroke="#C47B1060"
+              stroke-width="1.5"
+              marker-end="url(#ma)"
+            />
+            <line
+              x1="260"
+              y1="68"
+              x2="260"
+              y2="42"
+              stroke="#C47B1060"
+              stroke-width="1.5"
+              marker-end="url(#ma)"
+            />
+            <line
+              x1="172"
+              y1="22"
+              x2="132"
+              y2="22"
+              stroke="#C47B1060"
+              stroke-width="1.5"
+              marker-end="url(#ma)"
+            />
+            <line
+              x1="20"
+              y1="42"
+              x2="20"
+              y2="68"
+              stroke="#C47B1060"
+              stroke-width="1.5"
+              marker-end="url(#ma)"
+            />
+            <circle
+              cx="52"
+              cy="90"
+              r="17"
+              fill="#FEF3DF"
+              stroke="#E8A83A"
+              stroke-width="2.5"
+            />
+            <text
+              x="52"
+              y="95"
+              text-anchor="middle"
+              font-family="Fraunces,serif"
+              font-size="15"
+              font-weight="600"
+              fill="#C47B10"
+            >
+              3
+            </text>
+            <text
+              x="52"
+              y="8"
+              text-anchor="middle"
+              font-family="DM Sans,sans-serif"
+              font-size="10"
+              fill="#C47B10"
+              font-weight="500"
+            >
+              tap!
+            </text>
+            <circle
+              cx="108"
+              cy="90"
+              r="17"
+              fill="#FDFAF5"
+              stroke="#D8CCBA"
+              stroke-width="1.5"
+            />
+            <text
+              x="108"
+              y="95"
+              text-anchor="middle"
+              font-family="Fraunces,serif"
+              font-size="13"
+              fill="#B8A88A"
+            >
+              0
+            </text>
+            <circle
+              cx="172"
+              cy="90"
+              r="17"
+              fill="#FDFAF5"
+              stroke="#D8CCBA"
+              stroke-width="1.5"
+            />
+            <text
+              x="172"
+              y="95"
+              text-anchor="middle"
+              font-family="Fraunces,serif"
+              font-size="13"
+              fill="#B8A88A"
+            >
+              0
+            </text>
+            <circle
+              cx="228"
+              cy="90"
+              r="17"
+              fill="#FDFAF5"
+              stroke="#D8CCBA"
+              stroke-width="1.5"
+            />
+            <text
+              x="228"
+              y="95"
+              text-anchor="middle"
+              font-family="Fraunces,serif"
+              font-size="13"
+              fill="#B8A88A"
+            >
+              0
+            </text>
+            <text
+              x="140"
+              y="106"
+              text-anchor="middle"
+              font-family="DM Sans,sans-serif"
+              font-size="9"
+              fill="#B8A88A"
+            >
+              gems travel clockwise →
+            </text>
+          </svg>
+        </div>
+        <div class="tut-h">each pick is one turn</div>
+        <div class="tut-p">
+          Tap any <b>amber vault</b>. All its gems drop one-by-one
+          <b>clockwise around the loop</b>. That counts as your full turn. You
+          have a limited number of picks — plan ahead to hit your target.
+        </div>
+      </div>
+      <div class="tut-step" id="t1">
+        <div class="tut-illus">
+          <svg width="280" height="108" viewBox="0 0 280 108">
+            <defs>
+              <marker
+                id="mc"
+                markerWidth="7"
+                markerHeight="5"
+                refX="6"
+                refY="2.5"
+                orient="auto"
+              >
+                <polygon points="0 0,7 2.5,0 5" fill="#B8A88Aaa" />
+              </marker>
+              <marker
+                id="md"
+                markerWidth="7"
+                markerHeight="5"
+                refX="6"
+                refY="2.5"
+                orient="auto"
+              >
+                <polygon points="0 0,7 2.5,0 5" fill="#58A048cc" />
+              </marker>
+            </defs>
+            <rect
+              x="18"
+              y="18"
+              width="244"
+              height="72"
+              rx="28"
+              fill="none"
+              stroke="#D8CCBA"
+              stroke-width="1.5"
+            />
+            <circle
+              cx="52"
+              cy="90"
+              r="17"
+              fill="#FEF3DF"
+              stroke="#E8A83A"
+              stroke-width="2.5"
+            />
+            <text
+              x="52"
+              y="96"
+              text-anchor="middle"
+              font-family="DM Sans,sans-serif"
+              font-size="9"
+              fill="#C47B10"
+            >
+              last drop
+            </text>
+            <line
+              x1="72"
+              y1="90"
+              x2="88"
+              y2="90"
+              stroke="#B8A88A"
+              stroke-width="1.5"
+              stroke-dasharray="4 3"
+              marker-end="url(#mc)"
+            />
+            <circle
+              cx="108"
+              cy="90"
+              r="17"
+              fill="#EDE6D8"
+              stroke="#D8CCBA"
+              stroke-width="1.5"
+              stroke-dasharray="5 3"
+            />
+            <text
+              x="108"
+              y="95"
+              text-anchor="middle"
+              font-family="DM Sans,sans-serif"
+              font-size="11"
+              fill="#B8A88A"
+            >
+              0
+            </text>
+            <text
+              x="108"
+              y="78"
+              text-anchor="middle"
+              font-family="DM Sans,sans-serif"
+              font-size="9"
+              fill="#B8A88A"
+            >
+              empty ✓
+            </text>
+            <line
+              x1="128"
+              y1="90"
+              x2="140"
+              y2="90"
+              stroke="#58A048"
+              stroke-width="2"
+              stroke-dasharray="4 3"
+              marker-end="url(#md)"
+            />
+            <circle
+              cx="172"
+              cy="90"
+              r="17"
+              fill="#E4F2DF"
+              stroke="#58A048"
+              stroke-width="2.5"
+            />
+            <text
+              x="172"
+              y="95"
+              text-anchor="middle"
+              font-family="Fraunces,serif"
+              font-size="15"
+              font-weight="700"
+              fill="#2A6618"
+            >
+              5
+            </text>
+            <rect
+              x="194"
+              y="78"
+              width="70"
+              height="20"
+              rx="10"
+              fill="#E4F2DF"
+              stroke="#58A048"
+              stroke-width="1"
+            />
+            <text
+              x="229"
+              y="92"
+              text-anchor="middle"
+              font-family="DM Sans,sans-serif"
+              font-size="11"
+              font-weight="500"
+              fill="#2A6618"
+            >
+              +5 gems!
+            </text>
+            <text
+              x="140"
+              y="107"
+              text-anchor="middle"
+              font-family="DM Sans,sans-serif"
+              font-size="9"
+              fill="#B8A88A"
+            >
+              if next vault is NOT empty → no collect, turn ends
+            </text>
+          </svg>
+        </div>
+        <div class="tut-h">collect across the gap</div>
+        <div class="tut-p">
+          After your last gem drops — if the <b>next vault is empty</b> and the
+          vault after has gems, you <b>collect them all!</b> If the next vault
+          has gems, the turn ends with no collect. Plan your drops carefully.
+        </div>
+      </div>
+      <div class="tut-step" id="t2">
+        <div class="tut-illus">
+          <svg width="280" height="108" viewBox="0 0 280 108">
+            <rect
+              x="18"
+              y="18"
+              width="244"
+              height="72"
+              rx="28"
+              fill="none"
+              stroke="#D8CCBA"
+              stroke-width="1.5"
+            />
+            <circle
+              cx="52"
+              cy="90"
+              r="17"
+              fill="#FEF3DF"
+              stroke="#E8A83A"
+              stroke-width="2.5"
+            />
+            <text
+              x="52"
+              y="95"
+              text-anchor="middle"
+              font-family="Fraunces,serif"
+              font-size="14"
+              font-weight="600"
+              fill="#C47B10"
+            >
+              4
+            </text>
+            <circle
+              cx="108"
+              cy="90"
+              r="17"
+              fill="#F0EAF8"
+              stroke="#A07ACC"
+              stroke-width="2"
+            />
+            <text
+              x="108"
+              y="96"
+              text-anchor="middle"
+              font-family="Fraunces,serif"
+              font-size="18"
+              font-weight="700"
+              fill="#6B3FA0"
+            >
+              ?
+            </text>
+            <text
+              x="108"
+              y="78"
+              text-anchor="middle"
+              font-family="DM Sans,sans-serif"
+              font-size="8"
+              fill="#6B3FA0"
+            >
+              mystery
+            </text>
+            <circle
+              cx="172"
+              cy="90"
+              r="17"
+              fill="#FDFAF5"
+              stroke="#D8CCBA"
+              stroke-width="1.5"
+            />
+            <text
+              x="172"
+              y="95"
+              text-anchor="middle"
+              font-family="Fraunces,serif"
+              font-size="13"
+              fill="#B8A88A"
+            >
+              0
+            </text>
+            <circle
+              cx="228"
+              cy="90"
+              r="17"
+              fill="#FDFAF5"
+              stroke="#D8CCBA"
+              stroke-width="1.5"
+            />
+            <text
+              x="228"
+              y="95"
+              text-anchor="middle"
+              font-family="Fraunces,serif"
+              font-size="13"
+              fill="#B8A88A"
+            >
+              0
+            </text>
+            <text
+              x="108"
+              y="8"
+              text-anchor="middle"
+              font-family="DM Sans,sans-serif"
+              font-size="10"
+              fill="#6B3FA0"
+              font-weight="500"
+            >
+              tap to reveal!
+            </text>
+            <circle
+              cx="228"
+              cy="30"
+              r="14"
+              fill="#E4F2DF"
+              stroke="#58A048"
+              stroke-width="1.5"
+            />
+            <text
+              x="228"
+              y="35"
+              text-anchor="middle"
+              font-family="Fraunces,serif"
+              font-size="13"
+              font-weight="600"
+              fill="#2A6618"
+            >
+              3
+            </text>
+            <text
+              x="228"
+              y="10"
+              text-anchor="middle"
+              font-family="DM Sans,sans-serif"
+              font-size="9"
+              fill="#2A6618"
+            >
+              revealed!
+            </text>
+          </svg>
+        </div>
+        <div class="tut-h">mystery vaults</div>
+        <div class="tut-p">
+          Some levels have <b style="color: var(--pu)">mystery vaults</b> — you
+          can't see how many gems are inside. Tap them anyway —
+          <b>the count reveals the moment you pick</b>, then gems drop as
+          normal. Risk it or play safe — your call.
+        </div>
+      </div>
+      <div class="tut-nav">
+        <button
+          class="btn-gh"
+          id="tprev"
+          onclick="tutPrev()"
+          style="visibility: hidden"
+        >
+          ← back
+        </button>
+        <button class="btn-nx" id="tnext" onclick="tutNext()">next →</button>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div class="screen" id="s-map">
+      <div class="map-hdr">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="font-size: 20px">💎</div>
+          <div class="map-ttl">Tea Ceremony Loop</div>
+        </div>
+        <div class="map-btns">
+          <button
+            class="rst-btn"
+            id="test-btn"
+            onclick="toggleTest()"
+            style="border-color: var(--pu-br); color: var(--pu)"
+          >
+            test: off
+          </button>
+          <button class="rst-btn" onclick="doReset()">reset</button>
+        </div>
+      </div>
+      <div class="map-sub">each pick is a turn · collect across the gap</div>
+      <div class="lvl-grid" id="level-grid"></div>
+      <div
+        style="
+          margin-top: 12px;
+          display: flex;
+          gap: 12px;
+          font-size: 11px;
+          color: var(--fa);
+          flex-wrap: wrap;
+        "
+      >
+        <span
+          ><span
+            style="
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background: var(--am-bg);
+              border: 1.5px solid var(--am-br);
+              vertical-align: middle;
+              margin-right: 4px;
+            "
+          ></span
+          >tap to pick</span
+        >
+        <span
+          ><span
+            style="
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background: var(--pu-bg);
+              border: 1.5px solid var(--pu-br);
+              vertical-align: middle;
+              margin-right: 4px;
+            "
+          ></span
+          >mystery vault</span
+        >
+        <span
+          ><span
+            style="
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              border-radius: 4px;
+              background: #fffbf0;
+              border: 1.5px solid var(--am-br);
+              vertical-align: middle;
+              margin-right: 4px;
+            "
+          ></span
+          >challenge</span
+        >
+      </div>
+    </div>
+
+    <!-- GAME -->
+    <div class="screen" id="s-game">
+      <div class="g-bar">
+        <button class="g-bk" onclick="goMap()">← map</button>
+        <div class="g-nm" id="g-name"></div>
+        <span class="g-chal" id="g-chal" style="display: none"
+          >★ CHALLENGE</span
+        >
+        <button class="g-bk" onclick="retryLevel()">retry</button>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-l">served</div>
+          <div class="stat-v a" id="g-score">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">tea goal</div>
+          <div class="stat-v" id="g-target">—</div>
+        </div>
+        <div class="stat">
+          <div class="stat-l">pours left</div>
+          <div class="stat-v" id="g-turns">—</div>
+        </div>
+      </div>
+      <div class="brd-wrap">
+        <svg id="bsvg"></svg>
+        <div id="board"></div>
+      </div>
+      <div id="status">tap an amber vault — each pick is one turn</div>
+    </div>
+
+    <!-- CONFETTI -->
+    <div id="confetti-wrap"><canvas id="confetti-canvas"></canvas></div>
+
+    <!-- LEVEL COMPLETE -->
+    <div id="lc-overlay">
+      <div class="lc-bg" onclick=""></div>
+      <div class="lc-card">
+        <span class="lc-emoji" id="lc-emoji">🎉</span>
+        <div class="lc-ttl" id="lc-ttl"></div>
+        <div class="lc-sub" id="lc-sub"></div>
+        <div class="lc-stars" id="lc-stars"></div>
+        <div class="lc-btns">
+          <button class="lc-btn" onclick="retryLevel()">retry</button>
+          <button class="lc-btn" onclick="goMap()">levels</button>
+          <button class="lc-btn primary" id="lc-next" onclick="nextLevel()">
+            next →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ── ALL 100 LEVELS ──
+      const LEVELS = [
+        // LEVELS 1-25 (2x4 loop)
+        {
+          id: 1,
+          name: 'First Drop',
+          loop: '2x4',
+          gems: [3, 0, 0, 0, 0, 4, 0, 0],
+          turns: 1,
+          target: 3,
+        },
+        {
+          id: 2,
+          name: 'Other Side',
+          loop: '2x4',
+          gems: [0, 3, 0, 0, 0, 0, 4, 0],
+          turns: 1,
+          target: 3,
+        },
+        {
+          id: 3,
+          name: 'Far Corner',
+          loop: '2x4',
+          gems: [0, 0, 3, 0, 0, 0, 0, 3],
+          turns: 1,
+          target: 3,
+        },
+        {
+          id: 4,
+          name: 'Bottom Pick',
+          loop: '2x4',
+          gems: [4, 0, 0, 0, 2, 0, 0, 0],
+          turns: 1,
+          target: 4,
+        },
+        {
+          id: 5,
+          name: 'Full Loop',
+          loop: '2x4',
+          gems: [0, 4, 0, 0, 0, 2, 0, 0],
+          turns: 1,
+          target: 4,
+        },
+        {
+          id: 6,
+          name: 'Two Picks',
+          loop: '2x4',
+          gems: [3, 0, 0, 0, 0, 4, 0, 3],
+          turns: 2,
+          target: 3,
+        },
+        {
+          id: 7,
+          name: 'Three Vaults',
+          loop: '2x4',
+          gems: [4, 0, 0, 3, 0, 4, 0, 0],
+          turns: 2,
+          target: 4,
+        },
+        {
+          id: 8,
+          name: 'Spread Out',
+          loop: '2x4',
+          gems: [3, 0, 0, 0, 0, 4, 3, 0],
+          turns: 2,
+          target: 4,
+        },
+        {
+          id: 9,
+          name: 'Setup Shot',
+          loop: '2x4',
+          gems: [4, 0, 3, 0, 0, 0, 4, 0],
+          turns: 2,
+          target: 4,
+        },
+        {
+          id: 10,
+          name: 'Loop Logic',
+          loop: '2x4',
+          gems: [0, 4, 0, 3, 0, 0, 0, 4],
+          turns: 2,
+          target: 4,
+        },
+        {
+          id: 11,
+          name: 'Three Moves',
+          loop: '2x4',
+          gems: [3, 0, 0, 0, 0, 4, 0, 3],
+          turns: 3,
+          target: 3,
+        },
+        {
+          id: 12,
+          name: 'Corners',
+          loop: '2x4',
+          gems: [3, 5, 0, 0, 0, 2, 0, 0],
+          turns: 3,
+          target: 3,
+        },
+        {
+          id: 13,
+          name: 'Pick Order',
+          loop: '2x4',
+          gems: [3, 0, 4, 0, 0, 4, 0, 0],
+          turns: 3,
+          target: 4,
+        },
+        {
+          id: 14,
+          name: 'Diagonal',
+          loop: '2x4',
+          gems: [4, 0, 0, 0, 3, 0, 4, 0],
+          turns: 3,
+          target: 4,
+        },
+        {
+          id: 15,
+          name: 'Mid Board',
+          loop: '2x4',
+          gems: [0, 3, 0, 4, 0, 4, 0, 0],
+          turns: 3,
+          target: 4,
+        },
+        {
+          id: 16,
+          name: 'Cross Loop',
+          loop: '2x4',
+          gems: [4, 0, 3, 0, 4, 0, 0, 3],
+          turns: 3,
+          target: 4,
+        },
+        {
+          id: 17,
+          name: 'Deep Setup',
+          loop: '2x4',
+          gems: [0, 4, 0, 3, 0, 4, 3, 0],
+          turns: 3,
+          target: 2,
+        },
+        {
+          id: 18,
+          name: 'Four Vaults',
+          loop: '2x4',
+          gems: [3, 4, 0, 0, 4, 0, 0, 3],
+          turns: 3,
+          target: 4,
+        },
+        {
+          id: 19,
+          name: 'Long Chain',
+          loop: '2x4',
+          gems: [4, 0, 3, 4, 0, 0, 3, 0],
+          turns: 3,
+          target: 2,
+        },
+        {
+          id: 20,
+          name: 'Master Pick',
+          loop: '2x4',
+          gems: [4, 3, 0, 0, 3, 0, 4, 3],
+          turns: 3,
+          target: 5,
+        },
+        {
+          id: 21,
+          name: 'Four Moves',
+          loop: '2x4',
+          gems: [4, 0, 5, 3, 0, 0, 0, 2],
+          turns: 4,
+          target: 2,
+        },
+        {
+          id: 22,
+          name: 'Deep Plan',
+          loop: '2x4',
+          gems: [3, 4, 3, 0, 0, 4, 0, 3],
+          turns: 4,
+          target: 5,
+        },
+        {
+          id: 23,
+          name: 'Vault Maze',
+          loop: '2x4',
+          gems: [4, 0, 3, 4, 3, 0, 4, 0],
+          turns: 4,
+          target: 3,
+        },
+        {
+          id: 24,
+          name: 'Path Master',
+          loop: '2x4',
+          gems: [4, 3, 4, 0, 3, 4, 0, 3],
+          turns: 4,
+          target: 2,
+        },
+        {
+          id: 25,
+          name: 'The Mystery',
+          loop: '2x4',
+          gems: [0, 4, 6, 0, 0, 3, 0, 0],
+          turns: 4,
+          target: 2,
+          hidden: [2],
+        },
+        // LEVELS 26-100
+        {
+          id: 26,
+          name: 'Wider Search',
+          loop: '2x4',
+          gems: [3, 4, 0, 0, 0, 0, 0, 6],
+          turns: 4,
+          target: 5,
+        },
+        {
+          id: 27,
+          name: 'Vault Dance',
+          loop: '2x4',
+          gems: [4, 5, 7, 0, 7, 0, 0, 0],
+          turns: 4,
+          target: 4,
+        },
+        {
+          id: 28,
+          name: 'Loop Master',
+          loop: '2x4',
+          gems: [3, 0, 5, 0, 0, 0, 0, 6],
+          turns: 4,
+          target: 3,
+        },
+        {
+          id: 29,
+          name: 'Hidden Path',
+          loop: '2x4',
+          gems: [3, 3, 0, 0, 6, 0, 0, 0],
+          turns: 4,
+          target: 2,
+        },
+        {
+          id: 30,
+          name: 'Mystery Turn',
+          loop: '2x4',
+          gems: [3, 5, 0, 0, 0, 6, 0, 0],
+          turns: 4,
+          target: 4,
+          hidden: [1],
+        },
+        {
+          id: 31,
+          name: 'Four Deep',
+          loop: '2x4',
+          gems: [7, 6, 5, 0, 0, 0, 0, 6],
+          turns: 4,
+          target: 8,
+        },
+        {
+          id: 32,
+          name: 'Corner Play',
+          loop: '2x4',
+          gems: [7, 7, 2, 0, 0, 7, 0, 0],
+          turns: 4,
+          target: 5,
+        },
+        {
+          id: 33,
+          name: 'Long View',
+          loop: '2x4',
+          gems: [0, 2, 3, 7, 0, 0, 0, 5],
+          turns: 4,
+          target: 3,
+        },
+        {
+          id: 34,
+          name: 'Arc Shot',
+          loop: '2x4',
+          gems: [0, 3, 5, 0, 3, 3, 0, 0],
+          turns: 4,
+          target: 4,
+        },
+        {
+          id: 35,
+          name: 'New Angle',
+          loop: '2x4',
+          gems: [0, 7, 3, 4, 0, 0, 0, 0],
+          turns: 4,
+          target: 8,
+        },
+        {
+          id: 36,
+          name: 'Cross Pick',
+          loop: '2x4',
+          gems: [0, 5, 3, 0, 0, 0, 0, 3],
+          turns: 4,
+          target: 3,
+        },
+        {
+          id: 37,
+          name: 'Far Reach',
+          loop: '2x4',
+          gems: [0, 7, 2, 4, 0, 0, 0, 0],
+          turns: 4,
+          target: 8,
+        },
+        {
+          id: 38,
+          name: 'Split Path',
+          loop: '2x4',
+          gems: [4, 0, 0, 5, 0, 7, 0, 2],
+          turns: 4,
+          target: 4,
+        },
+        {
+          id: 39,
+          name: 'Loop Twist',
+          loop: '2x4',
+          gems: [0, 0, 2, 5, 6, 0, 0, 0],
+          turns: 4,
+          target: 3,
+        },
+        {
+          id: 40,
+          name: 'End Game',
+          loop: '2x4',
+          gems: [0, 0, 5, 5, 0, 6, 7, 0],
+          turns: 4,
+          target: 5,
+        },
+        {
+          id: 41,
+          name: 'New Loop',
+          loop: '2x5',
+          gems: [3, 6, 6, 0, 0, 0, 2, 0, 0, 0],
+          turns: 5,
+          target: 4,
+          hidden: [0],
+        },
+        {
+          id: 42,
+          name: 'Five Points',
+          loop: '2x5',
+          gems: [4, 0, 0, 0, 0, 0, 0, 2, 0, 2],
+          turns: 4,
+          target: 2,
+          hidden: [9],
+        },
+        {
+          id: 43,
+          name: 'Loop Wide',
+          loop: '2x5',
+          gems: [6, 5, 0, 0, 4, 0, 0, 0, 6, 0],
+          turns: 4,
+          target: 7,
+        },
+        {
+          id: 44,
+          name: 'Three Pick',
+          loop: '2x5',
+          gems: [6, 3, 0, 0, 0, 0, 0, 2, 0, 0],
+          turns: 4,
+          target: 2,
+        },
+        {
+          id: 45,
+          name: 'Spread Five',
+          loop: '2x5',
+          gems: [4, 7, 0, 0, 0, 0, 2, 0, 0, 0],
+          turns: 4,
+          target: 5,
+        },
+        {
+          id: 46,
+          name: 'Arc Five',
+          loop: '2x5',
+          gems: [0, 0, 0, 3, 0, 0, 0, 4, 7, 4],
+          turns: 4,
+          target: 5,
+          hidden: [9],
+        },
+        {
+          id: 47,
+          name: 'Five Hunt',
+          loop: '2x5',
+          gems: [5, 5, 0, 0, 0, 2, 0, 0, 0, 0],
+          turns: 4,
+          target: 3,
+        },
+        {
+          id: 48,
+          name: 'Corner Five',
+          loop: '2x5',
+          gems: [5, 0, 0, 2, 0, 0, 6, 7, 0, 0],
+          turns: 4,
+          target: 7,
+        },
+        {
+          id: 49,
+          name: 'Wide Setup',
+          loop: '2x5',
+          gems: [2, 3, 2, 5, 0, 0, 0, 0, 0, 0],
+          turns: 4,
+          target: 3,
+        },
+        {
+          id: 50,
+          name: 'Challenge I',
+          loop: '2x5',
+          gems: [0, 7, 6, 0, 0, 3, 0, 0, 0, 0],
+          turns: 5,
+          target: 4,
+          hidden: [2],
+          challenge: true,
+        },
+        {
+          id: 51,
+          name: 'Chain Five',
+          loop: '2x5',
+          gems: [2, 3, 0, 2, 0, 0, 0, 0, 3, 0],
+          turns: 4,
+          target: 3,
+        },
+        {
+          id: 52,
+          name: 'Five Deep',
+          loop: '2x5',
+          gems: [0, 0, 0, 0, 4, 0, 4, 0, 3, 0],
+          turns: 4,
+          target: 2,
+        },
+        {
+          id: 53,
+          name: 'Arc Search',
+          loop: '2x5',
+          gems: [0, 4, 7, 0, 0, 0, 7, 3, 0, 0],
+          turns: 4,
+          target: 5,
+        },
+        {
+          id: 54,
+          name: 'Five Cross',
+          loop: '2x5',
+          gems: [0, 0, 0, 3, 2, 5, 0, 0, 0, 0],
+          turns: 4,
+          target: 2,
+          hidden: [5],
+        },
+        {
+          id: 55,
+          name: 'Twin Mystery',
+          loop: '2x5',
+          gems: [2, 0, 0, 0, 0, 2, 6, 0, 0, 0],
+          turns: 5,
+          target: 2,
+          hidden: [0, 5],
+        },
+        {
+          id: 56,
+          name: 'Loop Five',
+          loop: '2x5',
+          gems: [0, 0, 4, 0, 0, 0, 0, 2, 3, 0],
+          turns: 4,
+          target: 2,
+        },
+        {
+          id: 57,
+          name: 'Far Five',
+          loop: '2x5',
+          gems: [0, 3, 0, 0, 0, 0, 0, 6, 4, 0],
+          turns: 4,
+          target: 3,
+        },
+        {
+          id: 58,
+          name: 'Wide Hunt',
+          loop: '2x5',
+          gems: [2, 5, 0, 0, 2, 0, 0, 0, 0, 7],
+          turns: 4,
+          target: 4,
+        },
+        {
+          id: 59,
+          name: 'Five Master',
+          loop: '2x5',
+          gems: [7, 6, 0, 0, 3, 0, 0, 0, 0, 5],
+          turns: 5,
+          target: 8,
+          hidden: [1],
+        },
+        {
+          id: 60,
+          name: 'Challenge II',
+          loop: '2x5',
+          gems: [5, 6, 0, 0, 2, 0, 0, 0, 0, 0],
+          turns: 5,
+          target: 3,
+          hidden: [1],
+          challenge: true,
+        },
+        {
+          id: 61,
+          name: 'Six Paths',
+          loop: '2x5',
+          gems: [0, 2, 2, 0, 3, 0, 0, 0, 0, 0],
+          turns: 5,
+          target: 2,
+        },
+        {
+          id: 62,
+          name: 'Five Arc',
+          loop: '2x5',
+          gems: [7, 5, 5, 0, 5, 2, 0, 0, 0, 0],
+          turns: 5,
+          target: 5,
+          hidden: [0],
+        },
+        {
+          id: 63,
+          name: 'Deep Five',
+          loop: '2x5',
+          gems: [3, 5, 0, 0, 0, 0, 0, 3, 0, 5],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 64,
+          name: 'Wide Five',
+          loop: '2x5',
+          gems: [0, 0, 0, 0, 0, 7, 2, 4, 2, 0],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 65,
+          name: 'Four Hunt',
+          loop: '2x5',
+          gems: [4, 6, 5, 0, 0, 0, 0, 0, 0, 0],
+          turns: 5,
+          target: 4,
+        },
+        {
+          id: 66,
+          name: 'Loop Hunt',
+          loop: '2x5',
+          gems: [0, 0, 5, 2, 0, 0, 0, 0, 3, 0],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 67,
+          name: 'Five Wide',
+          loop: '2x5',
+          gems: [2, 4, 0, 0, 0, 2, 3, 0, 0, 0],
+          turns: 4,
+          target: 2,
+        },
+        {
+          id: 68,
+          name: 'Twin Arc',
+          loop: '2x5',
+          gems: [0, 0, 6, 4, 5, 0, 3, 0, 0, 0],
+          turns: 5,
+          target: 4,
+          hidden: [3, 2],
+        },
+        {
+          id: 69,
+          name: 'Five Deep II',
+          loop: '2x5',
+          gems: [0, 0, 0, 0, 0, 6, 3, 2, 4, 7],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 70,
+          name: 'Wide Master',
+          loop: '2x5',
+          gems: [5, 0, 7, 0, 0, 0, 0, 0, 4, 6],
+          turns: 5,
+          target: 4,
+        },
+        {
+          id: 71,
+          name: 'Five Turn',
+          loop: '2x5',
+          gems: [3, 2, 4, 0, 0, 0, 0, 0, 0, 0],
+          turns: 5,
+          target: 2,
+        },
+        {
+          id: 72,
+          name: 'Deep Hunt',
+          loop: '2x5',
+          gems: [0, 3, 0, 0, 2, 3, 0, 0, 0, 0],
+          turns: 5,
+          target: 2,
+        },
+        {
+          id: 73,
+          name: 'Four Arc',
+          loop: '2x5',
+          gems: [2, 0, 0, 0, 0, 6, 0, 5, 0, 0],
+          turns: 5,
+          target: 2,
+        },
+        {
+          id: 74,
+          name: 'Long Five',
+          loop: '2x5',
+          gems: [0, 0, 0, 0, 0, 0, 6, 3, 4, 0],
+          turns: 5,
+          target: 2,
+        },
+        {
+          id: 75,
+          name: 'Challenge III',
+          loop: '2x5',
+          gems: [7, 5, 0, 0, 5, 2, 0, 0, 0, 0],
+          turns: 5,
+          target: 4,
+          hidden: [0, 1],
+          challenge: true,
+        },
+        {
+          id: 76,
+          name: 'Wide Loop',
+          loop: '2x5',
+          gems: [0, 0, 6, 3, 0, 0, 0, 2, 0, 0],
+          turns: 5,
+          target: 2,
+        },
+        {
+          id: 77,
+          name: 'Arc Hunt',
+          loop: '2x5',
+          gems: [2, 3, 5, 0, 0, 0, 0, 0, 3, 2],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 78,
+          name: 'Five Reach',
+          loop: '2x5',
+          gems: [0, 6, 2, 5, 0, 0, 0, 0, 0, 0],
+          turns: 5,
+          target: 3,
+          hidden: [2],
+        },
+        {
+          id: 79,
+          name: 'Loop Deep',
+          loop: '2x5',
+          gems: [0, 0, 0, 0, 0, 0, 7, 2, 0, 2],
+          turns: 5,
+          target: 2,
+        },
+        {
+          id: 80,
+          name: 'Four Wide',
+          loop: '2x5',
+          gems: [5, 3, 0, 0, 0, 7, 0, 0, 7, 6],
+          turns: 5,
+          target: 5,
+        },
+        {
+          id: 81,
+          name: 'Six Loop',
+          loop: '2x6',
+          gems: [0, 0, 0, 5, 0, 5, 0, 2, 6, 3, 0, 0],
+          turns: 5,
+          target: 4,
+        },
+        {
+          id: 82,
+          name: 'Wide Six',
+          loop: '2x6',
+          gems: [6, 0, 0, 5, 0, 0, 4, 0, 5, 0, 0, 0],
+          turns: 5,
+          target: 5,
+        },
+        {
+          id: 83,
+          name: 'Arc Six',
+          loop: '2x6',
+          gems: [3, 4, 2, 0, 0, 0, 4, 0, 0, 4, 0, 0],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 84,
+          name: 'Deep Six',
+          loop: '2x6',
+          gems: [0, 7, 5, 7, 0, 0, 0, 0, 4, 3, 0, 0],
+          turns: 5,
+          target: 5,
+          hidden: [8],
+        },
+        {
+          id: 85,
+          name: 'Six Hunt',
+          loop: '2x6',
+          gems: [3, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 7],
+          turns: 5,
+          target: 2,
+        },
+        {
+          id: 86,
+          name: 'Six Wide',
+          loop: '2x6',
+          gems: [0, 0, 0, 0, 7, 5, 4, 6, 0, 0, 0, 0],
+          turns: 5,
+          target: 5,
+          hidden: [7],
+        },
+        {
+          id: 87,
+          name: 'Six Master',
+          loop: '2x6',
+          gems: [3, 6, 0, 0, 0, 6, 6, 0, 7, 0, 0, 0],
+          turns: 5,
+          target: 5,
+        },
+        {
+          id: 88,
+          name: 'Six Cross',
+          loop: '2x6',
+          gems: [0, 0, 2, 5, 0, 0, 3, 4, 0, 0, 2, 0],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 89,
+          name: 'Six Arc',
+          loop: '2x6',
+          gems: [6, 5, 0, 0, 2, 0, 0, 0, 0, 0, 6, 6],
+          turns: 5,
+          target: 4,
+          hidden: [0],
+        },
+        {
+          id: 90,
+          name: 'Six Turn',
+          loop: '2x6',
+          gems: [4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0],
+          turns: 5,
+          target: 3,
+          hidden: [0],
+        },
+        {
+          id: 91,
+          name: 'Six Deep',
+          loop: '2x6',
+          gems: [0, 0, 0, 0, 0, 0, 4, 0, 0, 5, 0, 3],
+          turns: 4,
+          target: 2,
+        },
+        {
+          id: 92,
+          name: 'Six Path',
+          loop: '2x6',
+          gems: [3, 0, 0, 0, 0, 0, 0, 4, 0, 0, 5, 0],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 93,
+          name: 'Six Setup',
+          loop: '2x6',
+          gems: [0, 2, 0, 0, 4, 0, 0, 0, 0, 3, 0, 0],
+          turns: 4,
+          target: 2,
+        },
+        {
+          id: 94,
+          name: 'Six Flow',
+          loop: '2x6',
+          gems: [0, 0, 0, 2, 0, 0, 4, 0, 0, 5, 0, 3],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 95,
+          name: 'Six Curve',
+          loop: '2x6',
+          gems: [0, 0, 0, 5, 3, 0, 0, 4, 0, 0, 0, 0],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 96,
+          name: 'Six Far',
+          loop: '2x6',
+          gems: [0, 4, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0],
+          turns: 5,
+          target: 3,
+          hidden: [5],
+        },
+        {
+          id: 97,
+          name: 'Six Reach',
+          loop: '2x6',
+          gems: [5, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 5],
+          turns: 5,
+          target: 2,
+          hidden: [11],
+        },
+        {
+          id: 98,
+          name: 'Six Chain',
+          loop: '2x6',
+          gems: [0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 7, 3],
+          turns: 5,
+          target: 3,
+        },
+        {
+          id: 99,
+          name: 'Six Climb',
+          loop: '2x6',
+          gems: [5, 6, 4, 3, 0, 0, 0, 0, 0, 0, 0, 5],
+          turns: 5,
+          target: 4,
+        },
+        {
+          id: 100,
+          name: 'Grand Master',
+          loop: '2x6',
+          gems: [0, 4, 2, 3, 0, 5, 0, 0, 0, 0, 0, 0],
+          turns: 5,
+          target: 3,
+          hidden: [5, 2],
+          challenge: true,
+        },
+      ];
+
+      // Loop configs
+      const LCFG = {
+        '2x4': { n: 8, half: 4, vs: 78, gap: 24 },
+        '2x5': { n: 10, half: 5, vs: 62, gap: 14 },
+        '2x6': { n: 12, half: 6, vs: 50, gap: 10 },
+      };
+
+      let board = [],
+        score = 0,
+        turnsLeft = 0,
+        phase = 'idle';
+      let activeFlowPath = [];
+      let flowDot = null;
+      let vState = {},
+        trail = [],
+        curLv = null,
+        hidRev = {};
+      let progress = {},
+        testMode = false;
+      let confAnim = null,
+        isChalWin = false;
+      let picking = false;
+      let lastTouchTime = 0;
+      const DROP = 520;
+      const dl = (ms) => new Promise((r) => setTimeout(r, ms));
+      function ensureFlowDot() {
+        if (flowDot) return flowDot;
+
+        flowDot = document.createElement('div');
+
+        flowDot.className = 'flow-dot';
+
+        document.querySelector('.brd-wrap').appendChild(flowDot);
+
+        return flowDot;
+      }
+
+      function activateGrooveSegment(seg) {
+        document.querySelectorAll('.groove').forEach((s) => {
+          s.classList.remove('active');
+
+          s.classList.add('fading');
+
+          setTimeout(() => {
+            s.classList.remove('fading');
+          }, 220);
+        });
+
+        const el = document.querySelector(`.g-${seg}`);
+
+        if (el) {
+          el.classList.add('active');
+        }
+      }
+
+      // STORAGE
+      function loadProg() {
+        try {
+          progress = JSON.parse(localStorage.getItem('gl3_prog') || '{}');
+        } catch (e) {
+          progress = {};
+        }
+      }
+      function saveProg() {
+        try {
+          localStorage.setItem('gl3_prog', JSON.stringify(progress));
+        } catch (e) {}
+      }
+      function tutDone() {
+        try {
+          return !!localStorage.getItem('gl3_tut');
+        } catch (e) {
+          return false;
+        }
+      }
+      function setTutDone() {
+        try {
+          localStorage.setItem('gl3_tut', '1');
+        } catch (e) {}
+      }
+      function stars(id) {
+        return progress[id] || 0;
+      }
+      function unlocked(id) {
+        return testMode || id === 1 || (progress[id - 1] || 0) >= 3;
+      }
+
+      // SCREENS
+      function show(id) {
+        document
+          .querySelectorAll('.screen')
+          .forEach((s) => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+      }
+      function startFromTitle() {
+        if (tutDone()) {
+          show('s-map');
+          renderMap();
+        } else show('s-tut');
+      }
+      function goMap() {
+        stopConf();
+        hideLCO();
+        show('s-map');
+        renderMap();
+      }
+      function doReset() {
+        if (!confirm('Reset all progress?')) return;
+        progress = {};
+        try {
+          localStorage.removeItem('gl3_prog');
+        } catch (e) {}
+        renderMap();
+      }
+      function toggleTest() {
+        testMode = !testMode;
+        const b = document.getElementById('test-btn');
+        b.textContent = testMode ? 'test: on' : 'test: off';
+        b.style.borderColor = testMode ? 'var(--gn-br)' : 'var(--pu-br)';
+        b.style.color = testMode ? 'var(--gn)' : 'var(--pu)';
+        renderMap();
+      }
+
+      // TUTORIAL
+      let tStep = 0;
+      function setTStep(n) {
+        tStep = n;
+        document
+          .querySelectorAll('.tut-step')
+          .forEach((s, i) => s.classList.toggle('on', i === n));
+        document
+          .querySelectorAll('.tut-dot')
+          .forEach((d, i) => d.classList.toggle('on', i === n));
+        document.getElementById('tprev').style.visibility =
+          n === 0 ? 'hidden' : 'visible';
+        document.getElementById('tnext').textContent =
+          n === 2 ? "let's play!" : 'next →';
+      }
+      function tutNext() {
+        if (tStep < 2) setTStep(tStep + 1);
+        else finishTut();
+      }
+      function tutPrev() {
+        if (tStep > 0) setTStep(tStep - 1);
+      }
+      function finishTut() {
+        setTutDone();
+        show('s-map');
+        renderMap();
+      }
+
+      // MAP
+      function renderMap() {
+        const g = document.getElementById('level-grid');
+        g.innerHTML = '';
+
+        LEVELS.forEach((lv) => {
+          const s = stars(lv.id),
+            open = unlocked(lv.id);
+          const cls =
+            'lvl-nd ' +
+            (open ? (s === 3 ? 'done' : 'open') : 'locked') +
+            (lv.challenge ? ' challenge' : '');
+          const n = document.createElement('div');
+          n.className = cls;
+          n.innerHTML = `<div class="ln-num">${lv.id}</div>
+      <div class="ln-st ${s ? 'has' : 'no'}">${
+            s ? '★'.repeat(s) + '☆'.repeat(3 - s) : '☆☆☆'
+          }</div>
+      ${lv.challenge && open ? '<div class="ln-badge">★</div>' : ''}`;
+          if (open) n.onclick = () => startLevel(lv.id);
+          g.appendChild(n);
+        });
+      }
+
+      // BOARD
+      function getPos(loop, W) {
+        const c = LCFG[loop],
+          step = c.vs + c.gap;
+        const rw = c.half * c.vs + (c.half - 1) * c.gap,
+          sx = Math.round((W - rw) / 2);
+        const ty = 16,
+          by = ty + c.vs + 44,
+          p = [];
+        for (let i = 0; i < c.half; i++) p[i] = { x: sx + i * step, y: ty };
+        for (let i = 0; i < c.half; i++)
+          p[c.half + i] = { x: sx + (c.half - 1 - i) * step, y: by };
+        return p;
+      }
+      function bW() {
+        return document.getElementById('board').offsetWidth || 380;
+      }
+      function vCx(i) {
+        return getPos(curLv.loop, bW())[i].x + LCFG[curLv.loop].vs / 2;
+      }
+      function vCy(i) {
+        return getPos(curLv.loop, bW())[i].y + LCFG[curLv.loop].vs / 2;
+      }
+      function badgeY(i) {
+        const c = LCFG[curLv.loop],
+          p = getPos(curLv.loop, bW());
+        return i < c.half ? p[i].y - 22 : p[i].y + c.vs + 4;
+      }
+      function isHid(i) {
+        return curLv.hidden && curLv.hidden.includes(i) && !hidRev[i];
+      }
+
+      function buildSVG(loop, p, h) {
+        const c = LCFG[loop],
+          { half, vs } = c;
+        const tlx = p[0].x + vs / 2,
+          trx = p[half - 1].x + vs / 2;
+        const ty = p[0].y + vs / 2,
+          by = p[half].y + vs / 2;
+        const left = tlx - 36;
+        const right = trx + 36;
+
+        const top = ty - 18;
+        const bottom = by + 18;
+
+        const width = right - left;
+        const height = bottom - top;
+
+        const radius = 44;
+
+        const cx = Math.round((left + right) / 2);
+        const cy = Math.round((top + bottom) / 2) + 4;
+
+        return `<defs>
+    <marker id="a1" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#C47B1050"/></marker>
+    <marker id="a2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0,7 2.5,0 5" fill="#B8A88A88"/></marker>
+  </defs>
+  <!-- outer tray groove -->
+<rect
+x="${left}"
+y="${top}"
+width="${width}"
+height="${height}"
+rx="${radius}"
+fill="none"
+stroke="#C8A97A"
+stroke-width="14"
+opacity=".14"/>
+
+<!-- groove depth -->
+<rect
+x="${left + 4}"
+y="${top + 4}"
+width="${width - 8}"
+height="${height - 8}"
+rx="${radius - 4}"
+fill="none"
+stroke="#A88454"
+stroke-width="9"
+opacity=".09"/>
+
+<!-- groove highlight -->
+<rect
+x="${left + 10}"
+y="${top + 10}"
+width="${width - 20}"
+height="${height - 20}"
+rx="${radius - 10}"
+fill="none"
+stroke="#FFF4DF"
+stroke-width="3"
+opacity=".38"/>`;
+      }
+
+      function renderBoard() {
+        const el = document.getElementById('board');
+        el.innerHTML = '';
+        const c = LCFG[curLv.loop],
+          p = getPos(curLv.loop, bW());
+        const grooveSize =
+          curLv.loop === '2x4' ? 10 : curLv.loop === '2x5' ? 12 : 14;
+        const gt = document.createElement('div');
+        gt.className = 'groove g-top';
+
+        const gr = document.createElement('div');
+        gr.className = 'groove g-right';
+
+        const gb = document.createElement('div');
+        gb.className = 'groove g-bottom';
+
+        const gl = document.createElement('div');
+        gl.className = 'groove g-left';
+
+        el.append(gt, gr, gb, gl);
+        [gt, gr, gb, gl].forEach((g) => {
+          if (
+            g.classList.contains('g-top') ||
+            g.classList.contains('g-bottom')
+          ) {
+            g.style.height = grooveSize + 'px';
+          } else {
+            g.style.width = grooveSize + 'px';
+          }
+        });
+
+        const h = p[c.half].y + c.vs + 16;
+        el.style.height = h + 'px';
+
+        const svg = document.getElementById('bsvg');
+        svg.setAttribute('height', h);
+        svg.innerHTML = '';
+        svg.innerHTML = `
+<defs>
+  <marker id="a1"
+    markerWidth="7"
+    markerHeight="5"
+    refX="6"
+    refY="2.5"
+    orient="auto">
+
+    <polygon
+      points="0 0,7 2.5,0 5"
+      fill="#C47B10AA"/>
+  </marker>
+
+  <marker id="a2"
+    markerWidth="7"
+    markerHeight="5"
+    refX="6"
+    refY="2.5"
+    orient="auto">
+
+    <polygon
+      points="0 0,7 2.5,0 5"
+      fill="#B8A88AAA"/>
+  </marker>
+</defs>
+`;
+
+        for (let i = 0; i < c.n; i++) {
+          const { x, y } = p[i],
+            d = document.createElement('div');
+          d.className = 'v';
+          const fs = c.vs >= 70 ? 26 : c.vs >= 60 ? 22 : 18;
+          d.style.cssText = `
+left:${x}px;
+top:${y}px;
+
+width:${c.vs}px;
+height:${c.vs}px;
+
+font-size:${fs}px;
+`;
+          const hid = isHid(i),
+            st = vState[i];
+
+          const actualVal = board[i];
+
+          const val = hid ? '?' : actualVal;
+
+          let previewVal = actualVal;
+
+          const isPreviewCup = activeFlowPath.includes(i);
+
+          if (isPreviewCup) {
+            previewVal = Math.min(7, actualVal + 1);
+          }
+
+          const isMystery = hid;
+          if (isMystery) {
+            d.classList.add('mystery');
+          }
+
+          if (!hid && val === 0) {
+            d.classList.add('empty');
+          }
+
+          if (st) d.classList.add(st);
+
+          const svg = document.createElementNS(
+            'http://www.w3.org/2000/svg',
+            'svg'
+          );
+
+          svg.setAttribute('viewBox', '0 0 100 100');
+          svg.classList.add('cup-svg');
+
+          svg.innerHTML = `
+
+<defs>
+
+  <!-- NORMAL CERAMIC -->
+  <linearGradient id="cupBody" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#FFFDF9"/>
+    <stop offset="100%" stop-color="#E8DCCB"/>
+  </linearGradient>
+
+  <!-- PURPLE CERAMIC -->
+  <linearGradient id="mysteryBody" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#B89AE8"/>
+    <stop offset="100%" stop-color="#7A5AB7"/>
+  </linearGradient>
+
+  <!-- INNER -->
+  <linearGradient id="cupInner" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#F8F4EF"/>
+    <stop offset="100%" stop-color="#E7DAC6"/>
+  </linearGradient>
+
+</defs>
+
+<!-- HANDLE -->
+<path
+  d="
+    M76 36
+
+    Q90 40 90 50
+
+    Q90 62 76 66
+  "
+  fill="none"
+  stroke="${isMystery ? '#8462C5' : '#C8AA82'}"
+  stroke-width="7"
+  stroke-linecap="round"
+/>
+
+<!-- CUP BODY -->
+<path
+  d="
+    M24 26
+
+    C24 58 30 82 50 82
+
+    C70 82 76 58 76 26
+
+    Q75 18 50 18
+
+    Q25 18 24 26
+
+    Z
+  "
+  fill="${isMystery ? 'url(#mysteryBody)' : 'url(#cupBody)'}"
+  stroke="${isMystery ? '#8A6BC4' : '#D8C4A5'}"
+  stroke-width="2.5"
+/>
+
+<rect
+  class="tea-fill"
+  data-idx="${i}"
+  x="24"
+  y="${
+  hid
+    ? 82
+    : 82 - Math.max(0, previewVal * 6.5)
+}"
+  width="52"
+  height="${
+  hid
+    ? 0
+    : Math.max(0, previewVal * 6.5)
+}"
+  fill="url(#teaGrad${i})"
+  clip-path="url(#teaClip${i})"
+  opacity=".88"
+  rx="10"
+/>
+
+<!-- INNER CAVITY -->
+<ellipse
+  cx="50"
+  cy="24"
+  rx="20"
+  ry="6"
+  fill="${isMystery ? '#9A7ED3' : 'url(#cupInner)'}"
+/>
+
+<!-- INNER SHADOW -->
+<ellipse
+  cx="50"
+  cy="25"
+  rx="16"
+  ry="3"
+  fill="rgba(0,0,0,.06)"
+/>
+
+<!-- TEA CLIP -->
+<defs>
+  <clipPath id="teaClip${i}">
+    <path
+      d="
+        M24 26
+        C24 58 30 82 50 82
+        C70 82 76 58 76 26
+        Q75 18 50 18
+        Q25 18 24 26
+        Z
+      "
+    />
+  </clipPath>
+
+  <linearGradient id="teaGrad${i}" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#DDF5C8"/>
+    <stop offset="55%" stop-color="#94BD77"/>
+    <stop offset="100%" stop-color="#5A7C50"/>
+  </linearGradient>
+</defs>
+
+
+
+<!-- RIM -->
+<ellipse
+  cx="50"
+  cy="24"
+  rx="20"
+  ry="6"
+  fill="none"
+  stroke="${isMystery ? '#CDBAF4' : '#E9DCC6'}"
+  stroke-width="2"
+/>
+
+<!-- HIGHLIGHT -->
+<path
+  d="
+    M31 31
+    Q37 54 35 72
+  "
+  fill="none"
+  stroke="rgba(255,255,255,.42)"
+  stroke-width="4"
+  stroke-linecap="round"
+/>
+
+<!-- BOTTOM SHADOW -->
+<ellipse
+  cx="50"
+  cy="84"
+  rx="18"
+  ry="4"
+  fill="rgba(0,0,0,.10)"
+/>
+<!-- GROUND SHADOW -->
+<ellipse
+  cx="50"
+  cy="88"
+  rx="18"
+  ry="4"
+  fill="rgba(0,0,0,.16)"
+/>
+`;
+
+          const label = document.createElement('div');
+          label.className = 'v-label';
+          label.textContent = hid ? '?' : previewVal;
+
+          d.append(svg);
+
+          d.append(label);
+
+          if (phase === 'pick' && (isMystery || val > 0)) {
+            d.classList.add('pickable', 'breathing');
+
+            d.onmouseenter = () => showPreview(i);
+
+            d.onmouseleave = () => clearPreview();
+
+            d.addEventListener('pointerdown', (e) => {
+
+e.preventDefault();
+
+if (phase !== 'pick' || picking) return;
+
+pickVault(i);
+
+});
+          }
+
+          el.appendChild(d);
+        }
+        document.getElementById('g-score').textContent = score;
+        document.getElementById('g-turns').textContent = turnsLeft;
+        const t = curLv.target;
+        document.getElementById('g-score').className =
+          'stat-v' + (score >= t ? ' g' : ' a');
+      }
+
+      function addBadge(i, txt, type) {
+        const b = document.createElement('div');
+        b.className = 'badge ' + type;
+        b.style.left = vCx(i) + 'px';
+        b.style.top = badgeY(i) + 'px';
+        b.textContent = txt;
+        document.getElementById('board').appendChild(b);
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => b.classList.add('show'))
+        );
+      }
+      function clearBadges() {
+        document
+          .getElementById('board')
+          .querySelectorAll('.badge')
+          .forEach((b) => b.remove());
+      }
+      function drawArrow(a, b, col) {
+        const svg = document.getElementById('bsvg'),
+          l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        l.setAttribute('x1', vCx(a));
+        l.setAttribute('y1', vCy(a));
+        l.setAttribute('x2', vCx(b));
+        l.setAttribute('y2', vCy(b));
+        l.setAttribute('stroke', col === 'g' ? '#58A04888' : '#B8A88A88');
+        l.setAttribute('stroke-width', '2');
+        l.setAttribute('stroke-dasharray', '5 4');
+        l.setAttribute('marker-end', `url(#a${col === 'g' ? 1 : 2})`);
+        l.classList.add('ra');
+        svg.appendChild(l);
+      }
+      function clearArrows() {
+        document
+          .getElementById('bsvg')
+          .querySelectorAll('.ra')
+          .forEach((a) => a.remove());
+      }
+      function setSt(t) {
+        document.getElementById('status').textContent = t;
+      }
+
+      // GAME
+      function nxt(i) {
+        return (i + 1) % curLv.gems.length;
+      }
+
+      async function animateFlow(path) {
+        document.querySelector('.brd-wrap').classList.add('flowing');
+        const dot = ensureFlowDot();
+
+        dot.style.opacity = '1';
+        for (let i = 0; i < path.length; i++) {
+          const idx = path[i];
+
+          const cup = document.querySelectorAll('.v')[idx];
+          dot.style.left = vCx(idx) + 'px';
+          dot.style.top = vCy(idx) + 'px';
+
+          dot.style.transform = `translate(-50%,-50%) scale(${
+            1 + (i / path.length) * 0.08
+          })`;
+
+          if (cup) {
+            cup.classList.add('flowing');
+
+            if (i > 0) {
+              const prev = document.querySelectorAll('.v')[path[i - 1]];
+              if (prev) prev.classList.remove('flowing');
+            }
+
+            await dl(260);
+          }
+        }
+        dot.style.opacity = '0';
+        await dl(120);
+
+        dot.style.transform = 'translate(-50%,-50%) scale(1)';
+
+        document.querySelectorAll('.v.flowing').forEach((v) => {
+          v.classList.remove('flowing');
+        });
+
+        document.querySelector('.brd-wrap').classList.remove('flowing');
+      }
+      function clearPreview() {
+        document.querySelectorAll('.v').forEach((cup, idx) => {
+          cup.classList.remove('preview', 'preview-final');
+
+          const label = cup.querySelector('.v-label');
+          const tea = cup.querySelector('.tea-fill');
+
+          if (label && !isHid(idx)) {
+            label.textContent = board[idx];
+          }
+
+          if (tea) {
+
+if (isHid(idx)) {
+
+  tea.setAttribute('y', 82);
+  tea.setAttribute('height', 0);
+
+} else {
+
+  const h = board[idx] * 6.5;
+
+  tea.setAttribute('y', 82 - h);
+  tea.setAttribute('height', h);
+
+}
+}
+        });
+      }
+
+      function showPreview(idx) {
+        if (phase !== 'pick') return;
+        if (curLv.id > 15) return;
+
+        clearPreview();
+
+        const stones = board[idx];
+
+        if (!stones || stones <= 0) return;
+
+        let cur = idx;
+
+        for (let i = 0; i < stones; i++) {
+          cur = nxt(cur);
+
+          const cup = document.querySelectorAll('.v')[cur];
+
+          if (!cup) continue;
+
+          const label = cup.querySelector('.v-label');
+          const tea = cup.querySelector('.tea-fill');
+
+          let nextVal = Math.min(7, board[cur] + 1);
+
+          if (label && !isHid(cur)) {
+  label.textContent = nextVal;
+}
+
+if (tea && !isHid(cur)) {
+  const h = nextVal * 6.5;
+
+  tea.setAttribute('y', 82 - h);
+  tea.setAttribute('height', h);
+}
+
+          if (i === stones - 1) {
+            cup.classList.add('preview-final');
+          } else {
+            cup.classList.add('preview');
+          }
+        }
+      }
+      async function pickVault(idx) {
+        if (phase !== 'pick' || picking) return;
+        picking = true;
+document.getElementById('board').style.pointerEvents = 'none';
+const hid = isHid(idx);
+
+const k = board[idx];
+
+if (!hid && !k) {
+  picking = false;
+  document.getElementById('board').style.pointerEvents = '';
+  return;
+}
+
+phase = 'sowing';
+activeFlowPath = [];
+
+        clearPreview();
+        clearBadges();
+        clearArrows();
+
+        if (hid) {
+          hidRev[idx] = true;
+          const k = board[idx];
+          vState = {};
+          vState[idx] = 'hreveal';
+          renderBoard();
+          addBadge(idx, `revealed: ${k} gems!`, 'rev');
+          setSt(`mystery vault revealed — ${k} gems inside!`);
+          await dl(2200);
+          clearBadges();
+        }
+
+        let cur = idx;
+
+        for (let i = 0; i < k; i++) {
+  cur = nxt(cur);
+
+  activeFlowPath.push(cur);
+}
+
+// await animateFlow(activeFlowPath);
+
+// CLEAR PREVIEW PATH BEFORE REAL SOWING
+activeFlowPath = [];
+
+board[idx] = 0;
+        vState = {};
+        trail = [];
+        vState[idx] = 'source';
+        renderBoard();
+        setSt(`picked up ${k} gems — dropping clockwise…`);
+        await dl(DROP * 1.1);
+        const last = await dropGems(idx, k);
+        await resolveEnd(last);
+      }
+
+      function grooveFor(idx) {
+        const half = LCFG[curLv.loop].half;
+        const n = LCFG[curLv.loop].n;
+        if (idx < half) return 'top';
+        if (idx === half) return 'right';
+        if (idx === n - 1) return 'left';
+        return 'bottom';
+      }
+      async function dropGems(from, k) {
+        let cur = from;
+        for (let i = 0; i < k; i++) {
+          cur = nxt(cur);
+          board[cur]++;
+          vState[cur] = 'dropping';
+          renderBoard();
+          activateGrooveSegment(grooveFor(cur)); // ← after renderBoard, not before
+          await dl(DROP);
+          vState[cur] = 'trail';
+          trail.push(cur);
+          if (trail.length > 10) trail.shift();
+          trail.forEach((v) => {
+            if (vState[v] !== 'dropping') vState[v] = 'trail';
+          });
+        }
+        document.querySelectorAll('.groove').forEach((s) => {
+          s.classList.remove('active', 'fading');
+        });
+        return cur;
+      }
+      async function resolveEnd(lastV) {
+        vState = {};
+
+        renderBoard();
+        await dl(200);
+        const nx = nxt(lastV),
+          af = nxt(nx);
+        vState[lastV] = 'lastdrop';
+        renderBoard();
+        addBadge(lastV, 'dropped here', 'stop');
+        setSt('checking next vault…');
+        await dl(500);
+        drawArrow(lastV, nx, 'a');
+        await dl(360);
+        if (board[nx] === 0) {
+          vState[nx] = 'nocollect';
+          renderBoard();
+          addBadge(nx, 'empty', 'empty');
+          setSt('empty! checking vault after…');
+          await dl(480);
+          drawArrow(nx, af, 'g');
+          await dl(360);
+          if (board[af] > 0) {
+            const got = board[af];
+            board[af] = 0;
+            score += got;
+            if (isHid(af)) hidRev[af] = true;
+            vState[af] = 'collected';
+            renderBoard();
+            addBadge(af, `+${got} collected!`, 'collect');
+            setSt(`collected ${got} gems!`);
+            await dl(620);
+          } else {
+            vState[af] = 'nocollect';
+            renderBoard();
+            addBadge(af, 'also empty', 'miss');
+            setSt('both empty — no collect this pick');
+            await dl(420);
+          }
+        } else {
+          vState[nx] = 'nocollect';
+          renderBoard();
+          addBadge(nx, 'not empty', 'miss');
+          setSt('next vault has gems — no collect');
+          await dl(420);
+        }
+        endTurn();
+      }
+
+      function endTurn() {
+  picking = false;
+  document.getElementById('board').style.pointerEvents = '';
+  turnsLeft--;
+        if (
+          turnsLeft <= 0 ||
+          board.every((g) => g === 0) ||
+          score >= curLv.target
+        ) {
+          showComplete();
+          return;
+        }
+        phase = 'pick';
+        document.querySelectorAll('.v').forEach((v) => {
+          v.style.pointerEvents = 'auto';
+        });
+        clearBadges();
+        clearArrows();
+        vState = {};
+        renderBoard();
+        setSt(
+          `${turnsLeft} pour${
+            turnsLeft !== 1 ? 's' : ''
+          } left — choose your next cup`
+        );
+      }
+
+      function showComplete() {
+  picking = false;
+  document.getElementById('board').style.pointerEvents = '';
+  phase = 'done';
+        const lv = curLv;
+        const win = score >= lv.target;
+        const s = score >= lv.target ? 3 : 0;
+        if (s > (progress[lv.id] || 0)) {
+          progress[lv.id] = s;
+          saveProg();
+        }
+        isChalWin = win && !!lv.challenge;
+        document.getElementById('lc-emoji').textContent = isChalWin
+          ? '🏆'
+          : win
+          ? '🎉'
+          : '😅';
+        document.getElementById('lc-ttl').textContent = isChalWin
+          ? `Challenge ${lv.id} conquered!`
+          : win
+          ? `Level ${lv.id} complete!`
+          : 'Good try!';
+        document.getElementById('lc-sub').textContent = win
+          ? `You served ${score} cups of tea`
+          : `You served ${score} of ${lv.target} cups — try again!`;
+        document.getElementById('lc-stars').textContent =
+          s >= 3 ? '★★★' : s >= 2 ? '★★☆' : s >= 1 ? '★☆☆' : '☆☆☆';
+        document.getElementById('lc-next').style.display =
+          win && lv.id < 100 ? 'inline-flex' : 'none';
+        document.getElementById('lc-overlay').classList.add('show');
+        if (win) startConf(isChalWin);
+      }
+
+      function hideLCO() {
+        document.getElementById('lc-overlay').classList.remove('show');
+      }
+
+      function startLevel(id) {
+        const lv = LEVELS.find((l) => l.id === id);
+        if (!lv || !unlocked(id)) return;
+        curLv = lv;
+        board = [...lv.gems];
+        score = 0;
+        turnsLeft = lv.turns;
+        picking = false;
+        phase = 'idle';
+        vState = {};
+        trail = [];
+        hidRev = {};
+        stopConf();
+        hideLCO();
+        document.getElementById('g-name').textContent = `${lv.id}. ${lv.name}`;
+        document.getElementById('g-target').textContent = lv.target;
+        const chal = document.getElementById('g-chal');
+        chal.style.display = lv.challenge ? 'inline' : 'none';
+        show('s-game');
+        setTimeout(() => {
+          phase = 'pick';
+          renderBoard();
+          setSt('tap a tea cup — each pour is one move');
+        }, 60);
+      }
+      function retryLevel() {
+        hideLCO();
+        if (curLv) startLevel(curLv.id);
+      }
+      function nextLevel() {
+        hideLCO();
+        if (curLv && curLv.id < 100) startLevel(curLv.id + 1);
+        else goMap();
+      }
+
+      // CONFETTI
+      function startConf(isChallenge) {
+        const wrap = document.getElementById('confetti-wrap');
+        const canvas = document.getElementById('confetti-canvas');
+        wrap.classList.add('show');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const ctx = canvas.getContext('2d');
+        const count = isChallenge ? 250 : 120;
+        const speed = isChallenge ? 3.5 : 2.5;
+        const colors = isChallenge
+          ? [
+              '#C47B10',
+              '#E8A83A',
+              '#FFD700',
+              '#FFF8DC',
+              '#58A048',
+              '#6B3FA0',
+              '#B84A6E',
+              '#2A6618',
+            ]
+          : [
+              '#C47B10',
+              '#E8A83A',
+              '#58A048',
+              '#6B3FA0',
+              '#B84A6E',
+              '#2A6618',
+              '#FEF3DF',
+            ];
+        const shapes = isChallenge
+          ? ['circle', 'rect', 'star']
+          : ['circle', 'rect'];
+        const pieces = Array.from({ length: count }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * (isChallenge ? 9 : 6) + 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          shape: shapes[Math.floor(Math.random() * shapes.length)],
+          tilt: Math.random() * 10 - 5,
+          tc: Math.random() * 0.05 + 0.02,
+          angle: Math.random() * 360,
+          as: Math.random() * 3 + 1,
+        }));
+
+        function drawStar(ctx, x, y, r) {
+          ctx.beginPath();
+          for (let i = 0; i < 5; i++) {
+            const a = (i * 4 * Math.PI) / 5 - Math.PI / 2;
+            const b = (i * 4 * Math.PI) / 5 + (2 * Math.PI) / 5 - Math.PI / 2;
+            ctx.lineTo(Math.cos(a) * r + x, Math.sin(a) * r + y);
+            ctx.lineTo(
+              Math.cos(b) * (r * 0.4) + x,
+              Math.sin(b) * (r * 0.4) + y
+            );
+          }
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        function draw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          pieces.forEach((p) => {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.angle * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = 0.88;
+            if (p.shape === 'circle') {
+              ctx.beginPath();
+              ctx.arc(0, 0, p.r, 0, 2 * Math.PI);
+              ctx.fill();
+            } else if (p.shape === 'rect') {
+              ctx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+            } else {
+              drawStar(ctx, 0, 0, p.r);
+            }
+            ctx.restore();
+            p.y += speed;
+            p.x += Math.sin(p.tc) * 1.8;
+            p.tc += 0.025;
+            p.angle += p.as;
+            if (p.y > canvas.height + 20) {
+              p.y = -20;
+              p.x = Math.random() * canvas.width;
+            }
+          });
+          confAnim = requestAnimationFrame(draw);
+        }
+        if (confAnim) cancelAnimationFrame(confAnim);
+        draw();
+      }
+      function stopConf() {
+        if (confAnim) {
+          cancelAnimationFrame(confAnim);
+          confAnim = null;
+        }
+        document.getElementById('confetti-wrap').classList.remove('show');
+      }
+
+      loadProg();
+    </script>
+  </body>
+</html>

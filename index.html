@@ -2892,7 +2892,7 @@ if (
 
   return;
 }
-
+clearPreview();
 mobilePreviewIdx = null;
 
 pickVault(i);
@@ -3035,7 +3035,7 @@ if (teaInsight) {
 
 
       function clearPreview() {
-        mobilePreviewIdx = null;
+        
         document.querySelectorAll('.v').forEach((cup, idx) => {
           cup.classList.remove('preview', 'preview-final');
 

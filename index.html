@@ -633,6 +633,7 @@
 
       .v.pickable:hover .cup-svg {
         filter: drop-shadow(0 8px 16px rgba(40, 60, 30, 0.1)) brightness(1.03);
+        animation: teaShimmer 2s ease-in-out infinite;
       }
 
       .v.preview {
@@ -908,6 +909,60 @@
           filter: brightness(1);
         }
       }
+
+
+      #insight-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+#insight-btn{
+  border:none;
+  background:linear-gradient(to bottom,#eef7ea,#dfeeda);
+  color:#55704f;
+  border:1px solid #a9c49e;
+  border-radius:999px;
+  padding:8px 16px;
+  font-size:12px;
+  font-family:'DM Sans',sans-serif;
+  font-weight:600;
+  letter-spacing:.03em;
+  cursor:pointer;
+
+  transition:
+    transform .18s ease,
+    opacity .18s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+
+  box-shadow:
+    0 2px 6px rgba(80,120,80,.08),
+    inset 0 1px 0 rgba(255,255,255,.5);
+}
+
+#insight-btn.active{
+  background:linear-gradient(to bottom,#edf8e8,#d5ebcb);
+  color:#4d6b48;
+
+  animation:teaPulse 2.6s ease-in-out infinite;
+}
+
+#insight-btn.off{
+  opacity:.55;
+  background:#ece7df;
+  color:#8c8173;
+  border-color:#d4c4ae;
+  box-shadow:none;
+}
+
+#insight-sub{
+  font-size:10px;
+  color:var(--fa);
+  margin-top:5px;
+  letter-spacing:.03em;
+}
 
       @keyframes cupLift {
         0% {
@@ -1366,18 +1421,17 @@
         </div>
       </div>
 
-      <div
-  id="insight-note"
-  style="
-    text-align:center;
-    font-size:11px;
-    color:var(--fa);
-    margin-bottom:10px;
-    letter-spacing:.02em;
-  "
->
-  🍃 Tea Insight reveals future pours
-</div>
+      <div id="insight-wrap">
+
+        <button id="insight-btn">
+          🍃 Tea Insight ON
+        </button>
+      
+        <div id="insight-sub">
+          reveals future pours
+        </div>
+      
+      </div>
 
       <div class="brd-wrap">
         <svg id="bsvg"></svg>
@@ -2264,6 +2318,12 @@
         isChalWin = false;
       let picking = false;
       let lastTouchTime = 0;
+      let teaInsight = true;
+      let mobilePreviewIdx = null;
+
+
+
+
       const DROP = 520;
       const dl = (ms) => new Promise((r) => setTimeout(r, ms));
       function ensureFlowDot() {
@@ -2796,15 +2856,44 @@ font-size:${fs}px;
           if (phase === 'pick' && (isMystery || val > 0)) {
             d.classList.add('pickable', 'breathing');
 
-            d.onmouseenter = () => showPreview(i);
+            d.onmouseenter = () => {
 
-            d.onmouseleave = () => clearPreview();
+if (window.innerWidth > 768) {
+  showPreview(i);
+}
+};
 
-            d.addEventListener('pointerdown', (e) => {
+d.onmouseleave = () => {
+
+if (window.innerWidth > 768) {
+  clearPreview();
+}
+};
+
+d.addEventListener('pointerdown', (e) => {
 
 e.preventDefault();
 
 if (phase !== 'pick' || picking) return;
+
+const mobile = window.innerWidth <= 768;
+
+if (
+  mobile &&
+  teaInsight &&
+  mobilePreviewIdx !== i
+) {
+  clearPreview();
+  mobilePreviewIdx = i;
+
+  showPreview(i);
+
+  setSt('tap again to pour');
+
+  return;
+}
+
+mobilePreviewIdx = null;
 
 pickVault(i);
 
@@ -2904,7 +2993,49 @@ pickVault(i);
 
         document.querySelector('.brd-wrap').classList.remove('flowing');
       }
+
+      function updateInsightUI() {
+
+const btn = document.getElementById('insight-btn');
+const sub = document.getElementById('insight-sub');
+
+if (!btn) return;
+
+if (curLv && curLv.id > 15) {
+
+  btn.style.display = 'none';
+  sub.style.display = 'none';
+
+  return;
+}
+
+btn.style.display = 'block';
+sub.style.display = 'block';
+
+btn.classList.remove('active','off');
+
+if (teaInsight) {
+
+  btn.classList.add('active');
+  btn.textContent = '🍃 Tea Insight ON';
+
+  sub.textContent =
+    'reveals future pours';
+
+} else {
+
+  btn.classList.add('off');
+  btn.textContent = '🍂 Tea Insight OFF';
+
+  sub.textContent =
+    'discover the flow yourself';
+}
+}
+
+
+
       function clearPreview() {
+        mobilePreviewIdx = null;
         document.querySelectorAll('.v').forEach((cup, idx) => {
           cup.classList.remove('preview', 'preview-final');
 
@@ -2931,7 +3062,7 @@ if (isHid(idx)) {
 );
 } else {
 
-  const h = board[idx] * 6.5;
+  const h = board[idx] * 6.2;
 
   tea.setAttribute(
   'd',
@@ -2954,7 +3085,10 @@ if (isHid(idx)) {
 
       function showPreview(idx) {
         if (phase !== 'pick') return;
-        if (curLv.id > 15) return;
+
+if (!teaInsight) return;
+
+if (curLv.id > 15) return;
 
         clearPreview();
 
@@ -3012,7 +3146,7 @@ if (tea && !isHid(cur)) {
 document.getElementById('board').style.pointerEvents = 'none';
 const hid = isHid(idx);
 
-const k = board[idx];
+
 
 if (!hid && !k) {
   picking = false;
@@ -3209,13 +3343,10 @@ board[idx] = 0;
         const lv = LEVELS.find((l) => l.id === id);
         if (!lv || !unlocked(id)) return;
         curLv = lv;
-        const note = document.getElementById('insight-note');
+        teaInsight = lv.id <= 15;
 
-if (lv.id <= 15) {
-  note.style.display = 'block';
-} else {
-  note.style.display = 'none';
-}
+updateInsightUI();
+
         board = [...lv.gems];
         score = 0;
         turnsLeft = lv.turns;
@@ -3346,6 +3477,27 @@ if (lv.id <= 15) {
         }
         document.getElementById('confetti-wrap').classList.remove('show');
       }
+
+      document
+  .getElementById('insight-btn')
+  .onclick = () => {
+
+    if (!curLv) return;
+
+    if (curLv.id > 15) return;
+
+    teaInsight = !teaInsight;
+
+    updateInsightUI();
+
+    clearPreview();
+
+    if (teaInsight) {
+      setSt('Tea Insight enabled');
+    } else {
+      setSt('Tea Insight disabled');
+    }
+};
 
       loadProg();
     </script>

@@ -3141,41 +3141,59 @@ if (tea && !isHid(cur)) {
         }
       }
       async function pickVault(idx) {
-        if (phase !== 'pick' || picking) return;
-        picking = true;
+
+if (phase !== 'pick' || picking) return;
+
+picking = true;
+
 document.getElementById('board').style.pointerEvents = 'none';
+
 const hid = isHid(idx);
 
+const k = board[idx];
 
+if (!hid && (!k || k <= 0)) {
 
-if (!hid && !k) {
   picking = false;
+
   document.getElementById('board').style.pointerEvents = '';
+
   return;
 }
 
 phase = 'sowing';
+
 activeFlowPath = [];
 
-        clearPreview();
-        clearBadges();
-        clearArrows();
+clearPreview();
 
-        if (hid) {
-          hidRev[idx] = true;
-          const k = board[idx];
-          vState = {};
-          vState[idx] = 'hreveal';
-          renderBoard();
-          addBadge(idx, `revealed: ${k} gems!`, 'rev');
-          setSt(`mystery vault revealed — ${k} gems inside!`);
-          await dl(2200);
-          clearBadges();
-        }
+clearBadges();
 
-        let cur = idx;
+clearArrows();
 
-        for (let i = 0; i < k; i++) {
+if (hid) {
+
+  hidRev[idx] = true;
+
+  vState = {};
+
+  vState[idx] = 'hreveal';
+
+  renderBoard();
+
+  addBadge(idx, `revealed: ${k} gems!`, 'rev');
+
+  setSt(`mystery vault revealed — ${k} gems inside!`);
+
+  await dl(2200);
+
+  clearBadges();
+}
+
+let cur = idx;
+
+for (let i = 0; i < k; i++) {
+
   cur = nxt(cur);
 
   activeFlowPath.push(cur);
@@ -3183,19 +3201,26 @@ activeFlowPath = [];
 
 // await animateFlow(activeFlowPath);
 
-// CLEAR PREVIEW PATH BEFORE REAL SOWING
 activeFlowPath = [];
 
 board[idx] = 0;
-        vState = {};
-        trail = [];
-        vState[idx] = 'source';
-        renderBoard();
-        setSt(`picked up ${k} gems — dropping clockwise…`);
-        await dl(DROP * 1.1);
-        const last = await dropGems(idx, k);
-        await resolveEnd(last);
-      }
+
+vState = {};
+
+trail = [];
+
+vState[idx] = 'source';
+
+renderBoard();
+
+setSt(`picked up ${k} gems — dropping clockwise…`);
+
+await dl(DROP * 1.1);
+
+const last = await dropGems(idx, k);
+
+await resolveEnd(last);
+}
 
       function grooveFor(idx) {
         const half = LCFG[curLv.loop].half;

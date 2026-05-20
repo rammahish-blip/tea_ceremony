@@ -1089,7 +1089,88 @@ to bottom,
           scale: 1.02;
         }
       }
+
+      /* HINT RINGS for levels 1-3 */
+.hint-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2.5px solid var(--am);
+  pointer-events: none;
+  z-index: 15;
+  transform: translate(-50%, -50%);
+  animation: hintPulse 1.3s ease-in-out infinite;
+}
+@keyframes hintPulse {
+  0%, 100% { transform: translate(-50%,-50%) scale(1);    opacity: 0.85; }
+  50%       { transform: translate(-50%,-50%) scale(1.22); opacity: 0.28; }
+}
+.hint-tap {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--am);
+  background: var(--am-bg);
+  border: 1px solid var(--am-br);
+  border-radius: 999px;
+  padding: 3px 9px;
+  pointer-events: none;
+  z-index: 16;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  animation: hintBounce 1.3s ease-in-out infinite;
+}
+@keyframes hintBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0px);  }
+  50%       { transform: translateX(-50%) translateY(-5px); }
+}
+#step-callout {
+  display: none;
+  background: var(--am-bg);
+  border: 1px solid var(--am-br);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #7a4f10;
+  line-height: 1.65;
+  margin-bottom: 8px;
+  text-align: center;
+}
+#step-callout.show { display: block; }
+
+/* COLLECTION HIGHLIGHT - levels 1-3 */
+.v.empty-key {
+  filter: drop-shadow(0 0 10px rgba(199,154,91,.55));
+  animation: emptyKeyPulse 0.9s ease-in-out 2;
+}
+@keyframes emptyKeyPulse {
+  0%,100% { filter: drop-shadow(0 0 6px rgba(199,154,91,.4)); }
+  50%      { filter: drop-shadow(0 0 18px rgba(199,154,91,.8)); }
+}
+.v.collect-glow {
+  filter: drop-shadow(0 0 12px rgba(88,160,72,.65));
+  animation: collectGlow 0.85s ease-in-out 3;
+}
+@keyframes collectGlow {
+  0%,100% { filter: drop-shadow(0 0 6px rgba(88,160,72,.4)); }
+  50%      { filter: drop-shadow(0 0 22px rgba(88,160,72,.85)); }
+}
+.nudge-tap {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--am);
+  background: var(--am-bg);
+  border: 1px solid var(--am-br);
+  border-radius: 999px;
+  padding: 3px 9px;
+  pointer-events: none;
+  z-index: 16;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  animation: hintBounce 1s ease-in-out infinite;
+}
     </style>
+    
   </head>
   <body>
     <!-- TITLE -->
@@ -1105,6 +1186,60 @@ to bottom,
       >
         <div class="t-word">Tea Ceremony Loop</div>
         <div class="t-sub">a meditative tea ritual puzzle</div>
+
+        <svg width="160" height="160" viewBox="0 0 160 160" style="margin:18px 0 6px;">
+          <!-- body -->
+          <ellipse cx="80" cy="108" rx="42" ry="38" fill="#E8DDD0" stroke="#C4B09A" stroke-width="2"/>
+          <!-- belly -->
+          <ellipse cx="80" cy="116" rx="26" ry="24" fill="#F5EFE6"/>
+          <!-- head -->
+          <circle cx="80" cy="66" r="32" fill="#E8DDD0" stroke="#C4B09A" stroke-width="2"/>
+          <!-- left ear -->
+          <polygon points="52,42 44,18 66,36" fill="#E8DDD0" stroke="#C4B09A" stroke-width="1.5"/>
+          <polygon points="54,40 49,24 64,37" fill="#F2C4C4"/>
+          <!-- right ear -->
+          <polygon points="108,42 116,18 94,36" fill="#E8DDD0" stroke="#C4B09A" stroke-width="1.5"/>
+          <polygon points="106,40 111,24 96,37" fill="#F2C4C4"/>
+          <!-- eyes — happy closed, looking down at tea -->
+          <path d="M66 68 Q70 72 74 68" fill="none" stroke="#5C4A36" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M86 68 Q90 72 94 68" fill="none" stroke="#5C4A36" stroke-width="2.2" stroke-linecap="round"/>
+          <!-- nose -->
+          <ellipse cx="80" cy="76" rx="3" ry="2" fill="#E8A0A0"/>
+          <!-- mouth -->
+          <path d="M76 79 Q80 83 84 79" fill="none" stroke="#C4887A" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- whiskers left -->
+          <line x1="48" y1="74" x2="70" y2="77" stroke="#B0A090" stroke-width="1" stroke-linecap="round"/>
+          <line x1="48" y1="79" x2="70" y2="79" stroke="#B0A090" stroke-width="1" stroke-linecap="round"/>
+          <!-- whiskers right -->
+          <line x1="112" y1="74" x2="90" y2="77" stroke="#B0A090" stroke-width="1" stroke-linecap="round"/>
+          <line x1="112" y1="79" x2="90" y2="79" stroke="#B0A090" stroke-width="1" stroke-linecap="round"/>
+          <!-- arms holding cup -->
+          <path d="M46 108 Q38 118 48 128" fill="none" stroke="#C4B09A" stroke-width="7" stroke-linecap="round"/>
+          <path d="M114 108 Q122 118 112 128" fill="none" stroke="#C4B09A" stroke-width="7" stroke-linecap="round"/>
+          <!-- teacup -->
+          <path d="M52 126 C52 140 68 148 80 148 C92 148 108 140 108 126 Z" fill="#FFFDF8" stroke="#D4B896" stroke-width="2"/>
+          <ellipse cx="80" cy="126" rx="28" ry="7" fill="#FFFDF8" stroke="#D4B896" stroke-width="2"/>
+          <!-- tea surface -->
+          <ellipse cx="80" cy="126" rx="24" ry="5" fill="#C8A97A" opacity=".55"/>
+          <!-- steam -->
+          <path d="M70 118 Q67 110 70 102 Q73 94 70 86" fill="none" stroke="#C4B09A" stroke-width="1.8" stroke-linecap="round" opacity=".6">
+            <animate attributeName="opacity" values=".6;.2;.6" dur="2.2s" repeatCount="indefinite"/>
+          </path>
+          <path d="M80 116 Q77 107 80 99 Q83 91 80 83" fill="none" stroke="#C4B09A" stroke-width="1.8" stroke-linecap="round" opacity=".5">
+            <animate attributeName="opacity" values=".5;.15;.5" dur="2.8s" repeatCount="indefinite"/>
+          </path>
+          <path d="M90 118 Q93 110 90 102 Q87 94 90 86" fill="none" stroke="#C4B09A" stroke-width="1.8" stroke-linecap="round" opacity=".6">
+            <animate attributeName="opacity" values=".6;.2;.6" dur="2s" repeatCount="indefinite"/>
+          </path>
+          <!-- cup handle -->
+          <path d="M108 128 Q118 132 118 138 Q118 144 108 144" fill="none" stroke="#D4B896" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- tail -->
+          <path d="M118 118 Q138 110 136 96 Q134 84 124 88" fill="none" stroke="#C4B09A" stroke-width="7" stroke-linecap="round"/>
+          <!-- blush -->
+          <ellipse cx="64" cy="82" rx="6" ry="3.5" fill="#F2A0A0" opacity=".35"/>
+          <ellipse cx="96" cy="82" rx="6" ry="3.5" fill="#F2A0A0" opacity=".35"/>
+        </svg>
+
         <div class="t-gems">
           <div class="t-gem">3</div>
           <div class="t-gem">0</div>
@@ -1131,141 +1266,115 @@ to bottom,
         <div class="tut-dot" id="d2"></div>
       </div>
       <div class="tut-step on" id="t0">
-        <div class="tut-illus">
-          <svg width="280" height="120" viewBox="0 0 280 120">
+        <div class="tut-illus" style="flex-direction:column;gap:10px;min-height:160px;">
+          <svg width="260" height="110" viewBox="0 0 260 110">
             <defs>
               <marker id="cwa" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
                 <polygon points="0 0,6 2.5,0 5" fill="#C8A97A"/>
               </marker>
             </defs>
-            <!-- loop outline -->
-            <rect x="14" y="14" width="252" height="92" rx="32" fill="none" stroke="#e0d0bb" stroke-width="1.5"/>
-            <!-- clockwise arrows -->
-            <path d="M90 14 Q140 6 190 14" fill="none" stroke="#c8a97a" stroke-width="1.5" marker-end="url(#cwa)"/>
-            <path d="M266 44 L266 82" fill="none" stroke="#c8a97a" stroke-width="1.5" marker-end="url(#cwa)"/>
-            <path d="M190 106 Q140 114 90 106" fill="none" stroke="#c8a97a" stroke-width="1.5" marker-end="url(#cwa)"/>
-            <path d="M14 82 L14 44" fill="none" stroke="#c8a97a" stroke-width="1.5" marker-end="url(#cwa)"/>
-            <!-- source cup (amber) -->
-            <circle cx="46" cy="60" r="22" fill="#FEF3DF" stroke="#E8A83A" stroke-width="2.5"/>
-            <text x="46" y="65" text-anchor="middle" font-family="Fraunces,serif" font-size="16" font-weight="700" fill="#C47B10">3</text>
-            <text x="46" y="12" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="600" fill="#C47B10">tap!</text>
-            <!-- receiving cups (green tint) -->
-            <circle cx="120" cy="24" r="18" fill="#EAF4E4" stroke="#8FA283" stroke-width="1.5"/>
-            <text x="120" y="29" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#5d7155">+1</text>
-            <circle cx="200" cy="24" r="18" fill="#EAF4E4" stroke="#8FA283" stroke-width="1.5"/>
-            <text x="200" y="29" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#5d7155">+1</text>
-            <circle cx="248" cy="60" r="18" fill="#EAF4E4" stroke="#8FA283" stroke-width="1.5"/>
-            <text x="248" y="65" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#5d7155">+1</text>
-            <!-- empty cups -->
-            <circle cx="210" cy="96" r="18" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="1.5"/>
-            <text x="210" y="101" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#C8B8A0">0</text>
-            <circle cx="140" cy="106" r="18" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="1.5"/>
-            <text x="140" y="111" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#C8B8A0">0</text>
-            <circle cx="70" cy="96" r="18" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="1.5"/>
-            <text x="70" y="101" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#C8B8A0">0</text>
+            <circle cx="30"  cy="55" r="22" fill="#FEF3DF" stroke="#E8A83A" stroke-width="2.5"/>
+            <text x="30"  y="60" text-anchor="middle" font-family="Fraunces,serif" font-size="16" font-weight="700" fill="#C47B10">4</text>
+            <circle cx="90"  cy="55" r="22" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="1.5"/>
+            <text x="90"  y="60" text-anchor="middle" font-family="Fraunces,serif" font-size="16" fill="#C8B8A0">0</text>
+            <circle cx="150" cy="55" r="22" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="1.5"/>
+            <text x="150" y="60" text-anchor="middle" font-family="Fraunces,serif" font-size="16" fill="#C8B8A0">0</text>
+            <circle cx="210" cy="55" r="22" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="1.5"/>
+            <text x="210" y="60" text-anchor="middle" font-family="Fraunces,serif" font-size="16" fill="#C8B8A0">0</text>
+            <path d="M54 55 L66 55"   fill="none" stroke="#C8A97A" stroke-width="1.5" marker-end="url(#cwa)"/>
+            <path d="M114 55 L126 55" fill="none" stroke="#C8A97A" stroke-width="1.5" marker-end="url(#cwa)"/>
+            <path d="M174 55 L186 55" fill="none" stroke="#C8A97A" stroke-width="1.5" marker-end="url(#cwa)"/>
+            <text x="30"  y="16" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#C47B10">TAP THIS</text>
+            <text x="90"  y="16" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#8FA283">+1</text>
+            <text x="150" y="16" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#8FA283">+1</text>
+            <text x="210" y="16" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#8FA283">+1</text>
+            <text x="90"  y="94" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#5d7155">1</text>
+            <text x="150" y="94" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#5d7155">1</text>
+            <text x="210" y="94" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#5d7155">1</text>
+            <text x="30"  y="94" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#C8B8A0">0</text>
           </svg>
-          </div>
-        <div class="tut-h">tea flows clockwise</div>
+          <div style="font-size:11px;color:var(--mu);text-align:center;">tap the amber cup (4 gems) → 4 drops flow clockwise</div>
+        </div>
+        <div class="tut-h">tap a cup — tea flows clockwise</div>
         <div class="tut-p">
-          Tap any cup with tea inside.
-
-<br><br>
-
-Tea pours clockwise,
-one cup at a time.
-
-<br><br>
-
-The final drop determines
-what happens next.
+          Tap any cup that has tea inside.
+          <br><br>
+          Tea picks up and drops <b>one by one</b> into each cup going clockwise around the board.
+          <br><br>
+          A cup with <b>4 teas</b> drops into the next 4 cups. One drop each.
+          <br><br>
+          This uses one <b>pour</b>. You have a limited number of pours per level.
         </div>
       </div>
+
       <div class="tut-step" id="t1">
-        <div class="tut-illus">
-          <svg width="280" height="100" viewBox="0 0 280 100">
+        <div class="tut-illus" style="flex-direction:column;gap:10px;min-height:160px;">
+          <svg width="260" height="112" viewBox="0 0 260 112">
             <defs>
-              <marker id="ga" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-                <polygon points="0 0,7 2.5,0 5" fill="#58A048BB"/>
+              <marker id="ga2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                <polygon points="0 0,7 2.5,0 5" fill="#58A048CC"/>
               </marker>
-              <marker id="aa" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+              <marker id="aa2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
                 <polygon points="0 0,7 2.5,0 5" fill="#B8A88A99"/>
               </marker>
             </defs>
-            <!-- last drop cup (amber) -->
-            <circle cx="46" cy="50" r="26" fill="#FEF3DF" stroke="#E8A83A" stroke-width="2"/>
-            <text x="46" y="46" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#9c6b2f">last drop</text>
-            <text x="46" y="60" text-anchor="middle" font-family="Fraunces,serif" font-size="14" font-weight="700" fill="#C47B10">↓</text>
-            <!-- arrow to empty -->
-            <line x1="74" y1="50" x2="102" y2="50" stroke="#B8A88A" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#aa)"/>
-            <!-- empty cup -->
-            <circle cx="130" cy="50" r="26" fill="#F4EFE6" stroke="#D8CCBA" stroke-width="1.5" stroke-dasharray="6 3"/>
-            <text x="130" y="45" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#B8A88A">next cup</text>
-            <text x="130" y="59" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#C8B8A0">empty ✓</text>
-            <!-- green arrow to collect -->
-            <line x1="158" y1="50" x2="186" y2="50" stroke="#58A048" stroke-width="2" marker-end="url(#ga)"/>
-            <!-- collect cup (green) -->
-            <circle cx="220" cy="50" r="30" fill="#E4F2DF" stroke="#58A048" stroke-width="2.5"/>
-            <text x="220" y="44" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="600" fill="#3A7A28">collected!</text>
-            <text x="220" y="59" text-anchor="middle" font-family="Fraunces,serif" font-size="16" font-weight="700" fill="#2A6618">+5</text>
-            <!-- labels below -->
-            <text x="46" y="86" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">step 1</text>
-            <text x="130" y="86" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">step 2</text>
-            <text x="220" y="90" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#58A048" font-weight="600">earn points!</text>
+            <circle cx="40"  cy="55" r="24" fill="#FEF3DF" stroke="#E8A83A" stroke-width="2"/>
+            <text x="40" y="48" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#9c6b2f">last drop</text>
+            <text x="40" y="65" text-anchor="middle" font-family="Fraunces,serif" font-size="15" font-weight="700" fill="#C47B10">A</text>
+            <path d="M66 55 L88 55" fill="none" stroke="#B8A88A" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#aa2)"/>
+            <circle cx="115" cy="55" r="24" fill="#F4EFE6" stroke="#D8CCBA" stroke-width="1.5" stroke-dasharray="6 3"/>
+            <text x="115" y="48" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#B8A88A">check next</text>
+            <text x="115" y="67" text-anchor="middle" font-family="Fraunces,serif" font-size="11" fill="#C8B8A0">EMPTY ✓</text>
+            <path d="M141 55 L166 55" fill="none" stroke="#58A048" stroke-width="2" marker-end="url(#ga2)"/>
+            <text x="154" y="44" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="600" fill="#58A048">collect!</text>
+            <circle cx="200" cy="55" r="32" fill="#E4F2DF" stroke="#58A048" stroke-width="2.5"/>
+            <text x="200" y="46" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="600" fill="#3A7A28">cup after</text>
+            <text x="200" y="63" text-anchor="middle" font-family="Fraunces,serif" font-size="20" font-weight="700" fill="#2A6618">5</text>
+            <text x="40"  y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">step 1</text>
+            <text x="115" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">step 2</text>
+            <text x="200" y="97" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="600" fill="#58A048">you score 5!</text>
           </svg>
-          </div>
-        <div class="tut-h">collect across the gap</div>
+          <div style="font-size:11px;color:var(--mu);text-align:center;">last drop at A → next cup empty → collect cup after → +5 score</div>
+        </div>
+        <div class="tut-h">score by landing before a gap</div>
         <div class="tut-p">
-          After the final drop lands,
-        the game checks the next cup.
-        
-        <br><br>
-        
-        If that cup is <b>empty</b>, tea jumps across
-        and serves the cup after — earning points.
-        
-        <br><br>
-        
-        If the next cup has tea,
-        no collect happens — turn ends.
-        
-        <br><br>
-        
-        If both cups are empty,
-        no collect either. Plan your
-        final drop position carefully.
+          After the <b>last drop</b> lands, the game checks the <b>next cup clockwise</b>.
+          <br><br>
+          <b>Next cup is empty →</b> skip it, collect all tea from the cup after. You score!
+          <br><br>
+          <b>Next cup has tea →</b> nothing collected. Turn ends.
+          <br><br>
+          Your goal every pour: make the last drop fall just <b>before an empty cup</b>.
         </div>
       </div>
+
       <div class="tut-step" id="t2">
-        <div class="tut-illus">
-          <svg width="280" height="100" viewBox="0 0 280 100">
-            <!-- normal cup left -->
-            <circle cx="80" cy="50" r="32" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="2"/>
-            <text x="80" y="43" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">normal cup</text>
-            <text x="80" y="62" text-anchor="middle" font-family="Fraunces,serif" font-size="22" font-weight="700" fill="#7e6a55">4</text>
-            <text x="80" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">value visible</text>
-            <!-- vs -->
-            <text x="140" y="54" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#C8B8A0">vs</text>
-            <!-- mystery cup right -->
-            <circle cx="200" cy="50" r="32" fill="#EEE8F1" stroke="#9D8AA7" stroke-width="2.5"/>
-            <text x="200" y="43" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#9D8AA7">mystery cup</text>
-            <text x="200" y="64" text-anchor="middle" font-family="Fraunces,serif" font-size="26" font-weight="700" fill="#6f5b75">?</text>
-            <text x="200" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#9D8AA7">tap to reveal!</text>
+        <div class="tut-illus" style="flex-direction:column;gap:10px;min-height:160px;">
+          <svg width="260" height="110" viewBox="0 0 260 110">
+            <circle cx="70"  cy="55" r="30" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="2"/>
+            <text x="70" y="46" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">normal cup</text>
+            <text x="70" y="68" text-anchor="middle" font-family="Fraunces,serif" font-size="24" font-weight="700" fill="#7e6a55">4</text>
+            <text x="70" y="96" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">value visible</text>
+            <text x="130" y="60" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" fill="#C8B8A0">vs</text>
+            <circle cx="195" cy="55" r="30" fill="#EEE8F1" stroke="#9D8AA7" stroke-width="2.5"/>
+            <text x="195" y="46" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#9D8AA7">mystery cup</text>
+            <text x="195" y="70" text-anchor="middle" font-family="Fraunces,serif" font-size="28" font-weight="700" fill="#6f5b75">?</text>
+            <text x="195" y="96" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#9D8AA7">tap to reveal first</text>
           </svg>
-          </div>
-        <div class="tut-h">hidden tea cups</div>
+          <div style="font-size:11px;color:var(--mu);text-align:center;">mystery cups must be revealed before their tea can be collected</div>
+        </div>
+        <div class="tut-h">mystery cups hide their tea</div>
         <div class="tut-p">
-          Some cups hide their tea amount.
-
-<br><br>
-
-Their value appears only
-when selected.
-
-<br><br>
-
-Plan carefully.
+          Some cups show <b>?</b> instead of a number.
+          <br><br>
+          Tap a mystery cup to <b>reveal</b> it. Once revealed, it works like any normal cup.
+          <br><br>
+          An unrevealed cup <b>cannot be collected from</b> even if the gap falls on it.
+          <br><br>
+          First 24 levels have no mystery cups — they appear gradually after that.
         </div>
       </div>
+
       <div class="tut-nav">
         <button
           class="btn-gh"
@@ -1425,6 +1534,7 @@ Plan carefully.
       
       </div>
 
+      <div id="step-callout"></div>
       <div class="brd-wrap">
         <svg id="bsvg"></svg>
         <div id="board"></div>
@@ -2429,7 +2539,7 @@ Plan carefully.
   loop: '2x6',
   gems: [3, 0, 0, 8, 0, 5, 0, 9, 0, 2, 7, 0],
   hidden: [3, 7, 10],
-  turns: 5,
+  turns: 7,
   target: 19,
   revealTargets: [
     { score: 5, index: 3 },
@@ -3107,12 +3217,13 @@ if (!mobile) {
 // MOBILE + TEA INSIGHT ON
 if (teaInsight && curLv.id <= 15) {
 
-  // first tap = preview
-  if (mobilePreviewIdx !== i) {
-  showPreview(i);
-  mobilePreviewIdx = i;
-  setSt('tap again to pour');
-  return;
+// first tap = preview
+if (mobilePreviewIdx !== i) {
+showPreview(i);
+mobilePreviewIdx = i;
+setSt('tap again to pour');
+startNudgeTimer(i);
+return;
 }
 
   // second tap = execute
@@ -3142,6 +3253,7 @@ pickVault(i);
         const t = curLv.target;
         document.getElementById('g-score').className =
           'stat-v' + (score >= t ? ' g' : ' a');
+        if (curLv && curLv.id <= 3 && phase === 'pick') addHintRings();
       }
 
       function addBadge(i, txt, type) {
@@ -3407,6 +3519,10 @@ clearBadges();
 
 clearArrows();
 
+clearHintRings();
+hideCallout();
+clearNudgeTimer();
+
 if (hid) {
 
   hidRev[idx] = true;
@@ -3417,9 +3533,9 @@ if (hid) {
 
   renderBoard();
 
-  addBadge(idx, `revealed: ${k} gems!`, 'rev');
+  addBadge(idx, `revealed: ${k} teas!`, 'rev');
 
-  setSt(`mystery vault revealed — ${k} gems inside!`);
+  setSt(`mystery vault revealed — ${k} teas inside!`);
 
   await dl(2200);
 
@@ -3449,7 +3565,7 @@ vState[idx] = 'source';
 
 renderBoard();
 
-setSt(`picked up ${k} gems — dropping clockwise…`);
+setSt(`picked up ${k} tea — pouring clockwise…`);
 
 await dl(DROP * 1.1);
 
@@ -3493,58 +3609,115 @@ await dl(DROP);
         return cur;
       }
       async function resolveEnd(lastV) {
-        vState = {};
 
-        renderBoard();
-        await dl(200);
-        const nx = nxt(lastV),
-          af = nxt(nx);
-        vState[lastV] = 'lastdrop';
-        renderBoard();
-        addBadge(lastV, 'dropped here', 'stop');
-        setSt('checking next vault…');
-        await dl(500);
-        drawArrow(lastV, nx, 'a');
-        await dl(360);
-        if (board[nx] === 0) {
-          vState[nx] = 'nocollect';
-          renderBoard();
-          addBadge(nx, 'empty', 'empty');
-          setSt('empty! checking vault after…');
-          await dl(480);
-          drawArrow(nx, af, 'g');
-          await dl(360);
-          if (board[af] > 0 && !isHid(af)) {
-  const got = board[af];
-  board[af] = 0;
-  score += got;
-  vState[af] = 'collected';
-  renderBoard();
-  addBadge(af, `+${got} collected!`, 'collect');
-  setSt(`collected ${got} gems!`);
-  await dl(620);
-} else if (board[af] > 0 && isHid(af)) {
-  vState[af] = 'nocollect';
-  renderBoard();
-  addBadge(af, '🔒 sealed', 'miss');
-  setSt('mystery cup is sealed — reveal it first');
-  await dl(500);
-} else {
-  vState[af] = 'nocollect';
-  renderBoard();
-  addBadge(af, 'also empty', 'miss');
-  setSt('both empty — no collect this pick');
-  await dl(420);
+// per-level delay multiplier — slowest at L1, eases off by L6
+function stepDelay(base) {
+  if (!curLv) return base;
+  const id = curLv.id;
+  if (id === 1) return base * 2.8;
+  if (id === 2) return base * 2.2;
+  if (id === 3) return base * 1.7;
+  if (id === 4) return base * 1.35;
+  if (id === 5) return base * 1.1;
+  return base;
 }
-        } else {
-          vState[nx] = 'nocollect';
-          renderBoard();
-          addBadge(nx, 'not empty', 'miss');
-          setSt('next vault has gems — no collect');
-          await dl(420);
-        }
-        endTurn();
-      }
+
+// extra pause before completion popup — longer on early levels
+function collectPause() {
+  if (!curLv) return 900;
+  const id = curLv.id;
+  if (id === 1) return 3200;
+  if (id === 2) return 2600;
+  if (id === 3) return 2100;
+  if (id === 4) return 1700;
+  if (id === 5) return 1300;
+  return 900;
+}
+
+const isEarly = curLv && curLv.id <= 5;
+
+vState = {};
+renderBoard();
+await dl(stepDelay(200));
+
+const nx = nxt(lastV), af = nxt(nx);
+vState[lastV] = 'lastdrop';
+renderBoard();
+addBadge(lastV, 'dropped here', 'stop');
+
+if (isEarly) showCallout('☕ Last drop landed — checking the next cup…');
+setSt('checking next vault…');
+await dl(stepDelay(500));
+
+drawArrow(lastV, nx, 'a');
+await dl(stepDelay(360));
+
+if (board[nx] === 0) {
+  vState[nx] = 'nocollect';
+  const emptyEl = document.querySelectorAll('.v')[nx];
+  if (isEarly && emptyEl) emptyEl.classList.add('empty-key');
+  renderBoard();
+  addBadge(nx, 'empty ✓', 'empty');
+  if (isEarly) showCallout('✅ Next cup is empty — that\'s the gap! Now serving from the cup after…');
+  setSt('empty! checking vault after…');
+  await dl(stepDelay(480));
+
+  drawArrow(nx, af, 'g');
+  await dl(stepDelay(360));
+
+  if (board[af] > 0 && !isHid(af)) {
+    const got = board[af];
+    board[af] = 0;
+    score += got;
+    vState[af] = 'collected';
+    renderBoard();
+    const collectEl = document.querySelectorAll('.v')[af];
+    if (isEarly && collectEl) collectEl.classList.add('collect-glow');
+    addBadge(af, `+${got} teas served!`, 'collect');
+    if (isEarly) showCallout(`🎉 Collected ${got} teas! Empty cup created the gap — tea from the cup after got collected.`);
+    setSt(`collected ${got} cups!`);
+    await dl(collectPause());
+    if (isEarly) {
+      const emptyEl2 = document.querySelectorAll('.v')[nx];
+      if (emptyEl2) emptyEl2.classList.remove('empty-key');
+      const collectEl2 = document.querySelectorAll('.v')[af];
+      if (collectEl2) collectEl2.classList.remove('collect-glow');
+    }
+  } else if (board[af] > 0 && isHid(af)) {
+    vState[af] = 'nocollect';
+    renderBoard();
+    addBadge(af, '🔒 sealed', 'miss');
+    if (isEarly) showCallout('🔒 Cup after is a mystery — reveal it first before tea can be served from it.');
+    setSt('mystery cup is sealed — reveal it first to serve');
+    await dl(stepDelay(500));
+    if (isEarly) {
+      const emptyEl2 = document.querySelectorAll('.v')[nx];
+      if (emptyEl2) emptyEl2.classList.remove('empty-key');
+    }
+  } else {
+    vState[af] = 'nocollect';
+    renderBoard();
+    addBadge(af, 'also empty', 'miss');
+    if (isEarly) showCallout('😔 Cup after is also empty — no tea served. Aim your last drop one step earlier!');
+    setSt('both empty — no tea served this pour');
+    await dl(stepDelay(420));
+    if (isEarly) {
+      const emptyEl2 = document.querySelectorAll('.v')[nx];
+      if (emptyEl2) emptyEl2.classList.remove('empty-key');
+    }
+  }
+} else {
+  vState[nx] = 'nocollect';
+  renderBoard();
+  addBadge(nx, 'not empty', 'miss');
+  if (isEarly) showCallout('⚠️ Next cup has tea — no serving this pour. That cup needs to be empty to serve.');
+  setSt('next cup has tea — no collect');
+  await dl(stepDelay(420));
+}
+
+hideCallout();
+endTurn();
+}
 
       function endTurn() {
         document.getElementById('board').style.pointerEvents = 'auto';
@@ -3923,7 +4096,78 @@ document
   .getElementById('tutorial-link-btn')
   .onclick = openTutorialFromGame;
 
+  // ── HINT RING SYSTEM (levels 1–3) ──────────────────────
+  function addHintRings() {
+        clearHintRings();
+        if (!curLv || curLv.id > 3 || phase !== 'pick') return;
+        const c = LCFG[curLv.loop];
+        const boardEl = document.getElementById('board');
+        board.forEach((val, idx) => {
+          if (val > 0 && !isHid(idx)) {
+            const ring = document.createElement('div');
+            ring.className = 'hint-ring';
+            ring.style.left   = vCx(idx) + 'px';
+            ring.style.top    = vCy(idx) + 'px';
+            ring.style.width  = (c.vs + 14) + 'px';
+            ring.style.height = (c.vs + 14) + 'px';
+            boardEl.appendChild(ring);
+
+            if (curLv.id === 1) {
+              const tap = document.createElement('div');
+              tap.className = 'hint-tap';
+              tap.style.left = vCx(idx) + 'px';
+              tap.style.top  = (vCy(idx) - c.vs / 2 - 26) + 'px';
+              tap.textContent = '👆 tap to pour';
+              boardEl.appendChild(tap);
+            }
+          }
+        });
+      }
+
+      function clearHintRings() {
+        document.getElementById('board')
+          .querySelectorAll('.hint-ring, .hint-tap')
+          .forEach(e => e.remove());
+      }
+
+      function showCallout(msg) {
+        const el = document.getElementById('step-callout');
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.add('show');
+      }
+
+      function hideCallout() {
+        const el = document.getElementById('step-callout');
+        if (el) el.classList.remove('show');
+      }
+
+      // ── 10-SECOND NUDGE after first preview tap ──────────────
+      let nudgeTimer = null;
+      let nudgeEl = null;
+
+      function startNudgeTimer(idx) {
+        clearNudgeTimer();
+        nudgeTimer = setTimeout(() => {
+          if (phase !== 'pick' || mobilePreviewIdx !== idx) return;
+          const c = LCFG[curLv.loop];
+          const boardEl = document.getElementById('board');
+          nudgeEl = document.createElement('div');
+          nudgeEl.className = 'nudge-tap';
+          nudgeEl.textContent = '👆 tap again to pour';
+          nudgeEl.style.left = vCx(idx) + 'px';
+          nudgeEl.style.top  = (vCy(idx) - c.vs / 2 - 26) + 'px';
+          boardEl.appendChild(nudgeEl);
+        }, 10000);
+      }
+
+      function clearNudgeTimer() {
+        if (nudgeTimer) { clearTimeout(nudgeTimer); nudgeTimer = null; }
+        if (nudgeEl)    { nudgeEl.remove(); nudgeEl = null; }
+      }
+
       loadProg();
     </script>
+
   </body>
 </html>

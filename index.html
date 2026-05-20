@@ -184,6 +184,8 @@
         margin-bottom: 16px;
         display: flex;
         justify-content: center;
+        min-height: 180px;
+        align-items: center;
       }
       .tut-h {
         font-family: 'Fraunces', serif;
@@ -263,33 +265,59 @@
         margin-bottom: 18px;
       }
       .lvl-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 8px;
-      }
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+}
+
       .lvl-nd {
         aspect-ratio: 1;
-        border-radius: 12px;
+        border-radius:50%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        border: 1.5px solid var(--br);
-        background: var(--sf);
+        border:2px solid #d7c3a5;
+        background:
+linear-gradient(
+to bottom,
+#fffdf8,
+#f3ece2
+);
+        box-shadow:
+  inset 0 1px 0 rgba(255,255,255,.65),
+  0 3px 8px rgba(60,40,20,.05);
         transition: transform 0.12s;
         position: relative;
       }
       .lvl-nd.open {
-        border-color: var(--am-br);
-        cursor: pointer;
-      }
+  border-color: var(--am-br);
+
+  cursor:pointer;
+
+  box-shadow:
+    0 0 0 2px rgba(199,154,91,.08),
+    0 3px 8px rgba(120,80,30,.05);
+}
       .lvl-nd.open:active {
         transform: scale(0.96);
       }
       .lvl-nd.done {
-        border-color: var(--gn-br);
-        cursor: pointer;
-      }
+  border-color: var(--gn-br);
+
+  cursor:pointer;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #f9fcf8,
+      #edf5e9
+    );
+
+  box-shadow:
+    0 0 0 2px rgba(143,162,131,.10),
+    0 4px 10px rgba(93,113,85,.10);
+}
       .lvl-nd.done:active {
         transform: scale(0.96);
       }
@@ -420,98 +448,14 @@
 
         padding: 26px 16px 18px;
 
-        overflow: hidden;
+        overflow: visible;
       }
       .brd-wrap.flowing {
         box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.24),
           0 10px 28px rgba(80, 60, 30, 0.08), 0 0 20px rgba(255, 214, 120, 0.1);
       }
 
-      .groove {
-        position: absolute;
-
-        background: linear-gradient(
-          180deg,
-          rgba(205, 185, 150, 0.36),
-          rgba(244, 232, 210, 0.92),
-          rgba(205, 185, 150, 0.36)
-        );
-
-        box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.34),
-          inset 0 -1px 3px rgba(120, 90, 50, 0.08);
-
-        opacity: 0.88;
-
-        transition: background 0.22s ease, box-shadow 0.22s ease,
-          opacity 0.22s ease, filter 0.22s ease;
-
-        z-index: 2;
-      }
-      /* TOP */
-      .groove.g-top {
-        left: 50px;
-        right: 50px;
-        top: 18px;
-
-        height: 14px;
-
-        border-radius: 14px;
-      }
-
-      /* RIGHT */
-      .groove.g-right {
-        top: 52px;
-        bottom: 52px;
-        right: 18px;
-
-        width: 14px;
-
-        border-radius: 14px;
-      }
-
-      /* BOTTOM */
-      .groove.g-bottom {
-        left: 50px;
-        right: 50px;
-        bottom: 18px;
-
-        height: 14px;
-
-        border-radius: 14px;
-      }
-
-      /* LEFT */
-      .groove.g-left {
-        top: 52px;
-        bottom: 52px;
-        left: 18px;
-
-        width: 14px;
-
-        border-radius: 14px;
-      }
-
-      /* ACTIVE SEGMENT */
-      .groove.active {
-        background: linear-gradient(
-          180deg,
-          rgba(255, 206, 120, 0.82),
-          rgba(255, 240, 205, 1),
-          rgba(255, 206, 120, 0.82)
-        );
-
-        box-shadow: 0 0 10px rgba(255, 214, 120, 0.2),
-          0 0 20px rgba(255, 214, 120, 0.1),
-          inset 0 1px 2px rgba(255, 255, 255, 0.24);
-
-        filter: saturate(1.08);
-
-        opacity: 1;
-      }
-
-      .groove.fading {
-        opacity: 0.55;
-      }
+      
 
       #board {
         position: relative;
@@ -525,42 +469,34 @@
         pointer-events: none;
       }
 
-      .flow-dot {
-        position: absolute;
+      .flow-dot{
+  position:absolute;
 
-        width: 12px;
-        height: 12px;
+  width:24px;
+  height:24px;
 
-        border-radius: 50%;
+  pointer-events:none;
+  z-index:20;
 
-        background: radial-gradient(
-          circle at 35% 35%,
-          rgba(255, 248, 228, 0.96) 0%,
-          rgba(214, 170, 96, 0.92) 42%,
-          rgba(156, 104, 42, 0.9) 100%
-        );
+  transform:translate(-50%,-50%);
 
-        box-shadow: 0 0 8px rgba(214, 170, 96, 0.18),
-          0 0 16px rgba(214, 170, 96, 0.08);
+  opacity:.85;
 
-        pointer-events: none;
+  transition:
+    left .16s linear,
+    top .16s linear,
+    opacity .16s linear,
+    transform .20s ease;
+}
 
-        z-index: 20;
+.flow-dot svg{
+  width:100%;
+  height:100%;
+  display:block;
 
-        transform: translate(-50%, -50%) scale(0.88);
-
-        opacity: 0.78;
-
-        transition: left 0.16s linear, top 0.16s linear, opacity 0.16s linear,
-          transform 0.22s ease;
-      }
-      #status {
-        font-size: 12px;
-        color: var(--mu);
-        text-align: center;
-        min-height: 18px;
-        margin: 8px 4px;
-      }
+  filter:
+    drop-shadow(0 2px 4px rgba(70,90,60,.15));
+}
 
       /* VAULTS */
       .v {
@@ -595,6 +531,10 @@
 
         pointer-events: none;
       }
+
+      .tea-fill{
+  transition: .25s ease;
+}
 
       .v-label {
         position: absolute;
@@ -656,6 +596,17 @@
         filter: drop-shadow(0 8px 18px rgba(196, 123, 16, 0.18))
           drop-shadow(0 0 22px rgba(196, 123, 16, 0.1)) brightness(1.08);
       }
+
+      .v.flowing {
+  transform:scale(1.06);
+}
+
+.v.flowing .cup-svg {
+  filter:
+    drop-shadow(0 0 10px rgba(214,170,96,.20))
+    drop-shadow(0 0 18px rgba(214,170,96,.12))
+    brightness(1.06);
+}
 
       .v.hidden:active {
         scale: 1.08;
@@ -796,6 +747,171 @@
         width: 100%;
         height: 100%;
       }
+
+      /* TEA INSIGHT INTRO */
+#insight-intro{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:280;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+#insight-intro.show{
+  display:flex;
+}
+
+#gm-intro{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:285;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+#gm-intro.show{
+  display:flex;
+}
+
+#mystery-intro{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:283;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+#mystery-intro.show{
+  display:flex;
+}
+
+.insight-bg{
+  position:absolute;
+  inset:0;
+  background:rgba(24,18,10,.42);
+  backdrop-filter:blur(2px);
+}
+
+.insight-card{
+  position:relative;
+
+  width:100%;
+  max-width:340px;
+
+  background:#fbf7f0;
+
+  border-radius:24px;
+
+  padding:28px 24px;
+
+  box-shadow:
+    0 20px 60px rgba(20,14,4,.28);
+
+  animation:introPop .34s ease-out forwards;
+
+  text-align:center;
+}
+
+@keyframes introPop{
+  from{
+    opacity:0;
+    transform:translateY(10px) scale(.94);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+.insight-leaf{
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+.insight-title{
+  font-family:'Fraunces',serif;
+  font-size:26px;
+  font-weight:700;
+
+  margin-bottom:10px;
+}
+
+.insight-copy{
+  font-size:13px;
+  line-height:1.7;
+  color:var(--mu);
+
+  margin-bottom:18px;
+}
+
+.insight-mini{
+  background:#f4f8ef;
+
+  border:1px solid #d4e2ca;
+
+  border-radius:14px;
+
+  padding:12px;
+
+  margin-bottom:18px;
+}
+
+.insight-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  font-size:13px;
+
+  margin-bottom:8px;
+}
+
+.insight-row:last-child{
+  margin-bottom:0;
+}
+
+.insight-chip{
+  background:white;
+
+  border:1px solid #d8e5cf;
+
+  border-radius:999px;
+
+  padding:4px 10px;
+
+  font-size:11px;
+  font-weight:600;
+
+  color:#5d7155;
+}
+
+.insight-btn2{
+  width:100%;
+
+  border:none;
+
+  background:var(--am);
+
+  color:white;
+
+  border-radius:14px;
+
+  padding:14px;
+
+  font-size:14px;
+  font-family:'DM Sans',sans-serif;
+  font-weight:600;
+
+  cursor:pointer;
+}
 
       /* LEVEL COMPLETE */
       #lc-overlay {
@@ -1006,7 +1122,7 @@
     <!-- TUTORIAL -->
     <div class="screen" id="s-tut">
       <div class="tut-hdr">
-        <div class="tut-ttl">the tea ceremony</div>
+        <div class="tut-ttl">how to play</div>
         <div class="tut-skip" onclick="finishTut()">skip</div>
       </div>
       <div class="tut-dots">
@@ -1016,290 +1132,138 @@
       </div>
       <div class="tut-step on" id="t0">
         <div class="tut-illus">
-          <svg width="280" height="110" viewBox="0 0 280 110">
-        
-            <!-- CUP 1 -->
-            <g transform="translate(12 16)">
-              <ellipse cx="34" cy="74" rx="28" ry="6" fill="rgba(0,0,0,.06)" />
-        
-              <path
-                d="M10 22 Q12 68 34 74 Q56 68 58 22 Z"
-                fill="#f7efe2"
-                stroke="#cdb28d"
-                stroke-width="2"
-              />
-        
-              <rect
-                x="15"
-                y="46"
-                width="38"
-                height="22"
-                rx="0 0 16 16"
-                fill="#6f8c63"
-              />
-        
-              <ellipse
-                cx="34"
-                cy="46"
-                rx="19"
-                ry="3"
-                fill="rgba(255,255,255,.22)"
-              />
-        
-              <text
-                x="34"
-                y="40"
-                text-anchor="middle"
-                font-size="16"
-                fill="#7a654c"
-                font-family="Fraunces"
-              >
-                4
-              </text>
-            </g>
-        
-            <!-- ARROW -->
-            <path
-              d="M84 56 H118"
-              stroke="#9caf8f"
-              stroke-width="4"
-              stroke-linecap="round"
-            />
-        
-            <polygon
-              points="118,56 108,50 108,62"
-              fill="#9caf8f"
-            />
-        
-            <!-- CUP 2 -->
-            <g transform="translate(126 16)">
-              <ellipse cx="34" cy="74" rx="28" ry="6" fill="rgba(0,0,0,.06)" />
-        
-              <path
-                d="M10 22 Q12 68 34 74 Q56 68 58 22 Z"
-                fill="#f7efe2"
-                stroke="#cdb28d"
-                stroke-width="2"
-              />
-        
-              <rect
-                x="15"
-                y="54"
-                width="38"
-                height="14"
-                rx="0 0 16 16"
-                fill="#6f8c63"
-              />
-        
-              <ellipse
-                cx="34"
-                cy="54"
-                rx="19"
-                ry="3"
-                fill="rgba(255,255,255,.22)"
-              />
-        
-              <text
-                x="34"
-                y="40"
-                text-anchor="middle"
-                font-size="16"
-                fill="#7a654c"
-                font-family="Fraunces"
-              >
-                2
-              </text>
-            </g>
-        
-            <!-- CUP 3 -->
-            <g transform="translate(218 16)">
-              <ellipse cx="34" cy="74" rx="28" ry="6" fill="rgba(0,0,0,.06)" />
-        
-              <path
-                d="M10 22 Q12 68 34 74 Q56 68 58 22 Z"
-                fill="#f7efe2"
-                stroke="#cdb28d"
-                stroke-width="2"
-              />
-        
-              <text
-                x="34"
-                y="52"
-                text-anchor="middle"
-                font-size="22"
-                fill="#c8b59c"
-                font-family="Fraunces"
-              >
-                0
-              </text>
-            </g>
-        
+          <svg width="280" height="120" viewBox="0 0 280 120">
+            <defs>
+              <marker id="cwa" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                <polygon points="0 0,6 2.5,0 5" fill="#C8A97A"/>
+              </marker>
+            </defs>
+            <!-- loop outline -->
+            <rect x="14" y="14" width="252" height="92" rx="32" fill="none" stroke="#e0d0bb" stroke-width="1.5"/>
+            <!-- clockwise arrows -->
+            <path d="M90 14 Q140 6 190 14" fill="none" stroke="#c8a97a" stroke-width="1.5" marker-end="url(#cwa)"/>
+            <path d="M266 44 L266 82" fill="none" stroke="#c8a97a" stroke-width="1.5" marker-end="url(#cwa)"/>
+            <path d="M190 106 Q140 114 90 106" fill="none" stroke="#c8a97a" stroke-width="1.5" marker-end="url(#cwa)"/>
+            <path d="M14 82 L14 44" fill="none" stroke="#c8a97a" stroke-width="1.5" marker-end="url(#cwa)"/>
+            <!-- source cup (amber) -->
+            <circle cx="46" cy="60" r="22" fill="#FEF3DF" stroke="#E8A83A" stroke-width="2.5"/>
+            <text x="46" y="65" text-anchor="middle" font-family="Fraunces,serif" font-size="16" font-weight="700" fill="#C47B10">3</text>
+            <text x="46" y="12" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" font-weight="600" fill="#C47B10">tap!</text>
+            <!-- receiving cups (green tint) -->
+            <circle cx="120" cy="24" r="18" fill="#EAF4E4" stroke="#8FA283" stroke-width="1.5"/>
+            <text x="120" y="29" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#5d7155">+1</text>
+            <circle cx="200" cy="24" r="18" fill="#EAF4E4" stroke="#8FA283" stroke-width="1.5"/>
+            <text x="200" y="29" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#5d7155">+1</text>
+            <circle cx="248" cy="60" r="18" fill="#EAF4E4" stroke="#8FA283" stroke-width="1.5"/>
+            <text x="248" y="65" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#5d7155">+1</text>
+            <!-- empty cups -->
+            <circle cx="210" cy="96" r="18" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="1.5"/>
+            <text x="210" y="101" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#C8B8A0">0</text>
+            <circle cx="140" cy="106" r="18" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="1.5"/>
+            <text x="140" y="111" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#C8B8A0">0</text>
+            <circle cx="70" cy="96" r="18" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="1.5"/>
+            <text x="70" y="101" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#C8B8A0">0</text>
           </svg>
-        </div>
+          </div>
         <div class="tut-h">tea flows clockwise</div>
         <div class="tut-p">
-          Choose a <b>tea cup</b> to begin the pour.
-          Tea flows <b>clockwise through the ceremony</b>,
-          filling each cup one-by-one.
-          Each pour is a full turn —
-          plan carefully before serving the tea.
+          Tap any cup with tea inside.
+
+<br><br>
+
+Tea pours clockwise,
+one cup at a time.
+
+<br><br>
+
+The final drop determines
+what happens next.
         </div>
       </div>
       <div class="tut-step" id="t1">
         <div class="tut-illus">
-          <svg width="280" height="110" viewBox="0 0 280 110">
-        
-            <!-- LEFT CUP -->
-            <g transform="translate(18 16)">
-              <ellipse cx="34" cy="74" rx="28" ry="6" fill="rgba(0,0,0,.06)" />
-        
-              <path
-                d="M10 22 Q12 68 34 74 Q56 68 58 22 Z"
-                fill="#f7efe2"
-                stroke="#cdb28d"
-                stroke-width="2"
-              />
-        
-              <rect
-                x="15"
-                y="40"
-                width="38"
-                height="28"
-                rx="0 0 16 16"
-                fill="#6f8c63"
-              />
-        
-              <ellipse
-                cx="34"
-                cy="40"
-                rx="19"
-                ry="3"
-                fill="rgba(255,255,255,.22)"
-              />
-            </g>
-        
-            <!-- GAP -->
-            <circle cx="140" cy="56" r="9" fill="#e8dfd1" />
-        
-            <!-- FLOW -->
-            <path
-              d="M86 56 Q140 28 194 56"
-              stroke="#8fa283"
-              stroke-width="4"
-              fill="none"
-              stroke-linecap="round"
-              stroke-dasharray="6 8"
-            />
-        
-            <!-- RIGHT CUP -->
-            <g transform="translate(188 16)">
-              <ellipse cx="34" cy="74" rx="28" ry="6" fill="rgba(0,0,0,.06)" />
-        
-              <path
-                d="M10 22 Q12 68 34 74 Q56 68 58 22 Z"
-                fill="#f7efe2"
-                stroke="#cdb28d"
-                stroke-width="2"
-              />
-        
-              <rect
-                x="15"
-                y="54"
-                width="38"
-                height="14"
-                rx="0 0 16 16"
-                fill="#6f8c63"
-              />
-            </g>
-        
+          <svg width="280" height="100" viewBox="0 0 280 100">
+            <defs>
+              <marker id="ga" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                <polygon points="0 0,7 2.5,0 5" fill="#58A048BB"/>
+              </marker>
+              <marker id="aa" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                <polygon points="0 0,7 2.5,0 5" fill="#B8A88A99"/>
+              </marker>
+            </defs>
+            <!-- last drop cup (amber) -->
+            <circle cx="46" cy="50" r="26" fill="#FEF3DF" stroke="#E8A83A" stroke-width="2"/>
+            <text x="46" y="46" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#9c6b2f">last drop</text>
+            <text x="46" y="60" text-anchor="middle" font-family="Fraunces,serif" font-size="14" font-weight="700" fill="#C47B10">↓</text>
+            <!-- arrow to empty -->
+            <line x1="74" y1="50" x2="102" y2="50" stroke="#B8A88A" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#aa)"/>
+            <!-- empty cup -->
+            <circle cx="130" cy="50" r="26" fill="#F4EFE6" stroke="#D8CCBA" stroke-width="1.5" stroke-dasharray="6 3"/>
+            <text x="130" y="45" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="#B8A88A">next cup</text>
+            <text x="130" y="59" text-anchor="middle" font-family="Fraunces,serif" font-size="13" fill="#C8B8A0">empty ✓</text>
+            <!-- green arrow to collect -->
+            <line x1="158" y1="50" x2="186" y2="50" stroke="#58A048" stroke-width="2" marker-end="url(#ga)"/>
+            <!-- collect cup (green) -->
+            <circle cx="220" cy="50" r="30" fill="#E4F2DF" stroke="#58A048" stroke-width="2.5"/>
+            <text x="220" y="44" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="600" fill="#3A7A28">collected!</text>
+            <text x="220" y="59" text-anchor="middle" font-family="Fraunces,serif" font-size="16" font-weight="700" fill="#2A6618">+5</text>
+            <!-- labels below -->
+            <text x="46" y="86" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">step 1</text>
+            <text x="130" y="86" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">step 2</text>
+            <text x="220" y="90" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#58A048" font-weight="600">earn points!</text>
           </svg>
-        </div>
+          </div>
         <div class="tut-h">collect across the gap</div>
         <div class="tut-p">
-          When the final pour lands —
-          if the next cup is empty,
-          the tea continues across the gap
-          and <b>serves the following cup</b>.
-          Predicting these moments is the heart
-          of the ceremony.
+          After the final drop lands,
+        the game checks the next cup.
+        
+        <br><br>
+        
+        If that cup is <b>empty</b>, tea jumps across
+        and serves the cup after — earning points.
+        
+        <br><br>
+        
+        If the next cup has tea,
+        no collect happens — turn ends.
+        
+        <br><br>
+        
+        If both cups are empty,
+        no collect either. Plan your
+        final drop position carefully.
         </div>
       </div>
       <div class="tut-step" id="t2">
         <div class="tut-illus">
-          <svg width="280" height="110" viewBox="0 0 280 110">
-        
-            <!-- NORMAL CUP -->
-            <g transform="translate(44 16)">
-              <ellipse cx="34" cy="74" rx="28" ry="6" fill="rgba(0,0,0,.06)" />
-        
-              <path
-                d="M10 22 Q12 68 34 74 Q56 68 58 22 Z"
-                fill="#f7efe2"
-                stroke="#cdb28d"
-                stroke-width="2"
-              />
-        
-              <rect
-                x="15"
-                y="48"
-                width="38"
-                height="20"
-                rx="0 0 16 16"
-                fill="#6f8c63"
-              />
-        
-              <text
-                x="34"
-                y="40"
-                text-anchor="middle"
-                font-size="16"
-                fill="#7a654c"
-                font-family="Fraunces"
-              >
-                3
-              </text>
-            </g>
-        
-            <!-- MYSTERY CUP -->
-            <g transform="translate(164 16)">
-        
-              <ellipse
-                cx="34"
-                cy="74"
-                rx="28"
-                ry="6"
-                fill="rgba(111,91,117,.14)"
-              />
-        
-              <path
-                d="M10 22 Q12 68 34 74 Q56 68 58 22 Z"
-                fill="#eee8f1"
-                stroke="#9d8aa7"
-                stroke-width="2.5"
-              />
-        
-              <text
-                x="34"
-                y="54"
-                text-anchor="middle"
-                font-size="28"
-                fill="#6f5b75"
-                font-family="Fraunces"
-              >
-                ?
-              </text>
-        
-            </g>
-        
+          <svg width="280" height="100" viewBox="0 0 280 100">
+            <!-- normal cup left -->
+            <circle cx="80" cy="50" r="32" fill="#FDFAF5" stroke="#D8CCBA" stroke-width="2"/>
+            <text x="80" y="43" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">normal cup</text>
+            <text x="80" y="62" text-anchor="middle" font-family="Fraunces,serif" font-size="22" font-weight="700" fill="#7e6a55">4</text>
+            <text x="80" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#B8A88A">value visible</text>
+            <!-- vs -->
+            <text x="140" y="54" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#C8B8A0">vs</text>
+            <!-- mystery cup right -->
+            <circle cx="200" cy="50" r="32" fill="#EEE8F1" stroke="#9D8AA7" stroke-width="2.5"/>
+            <text x="200" y="43" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#9D8AA7">mystery cup</text>
+            <text x="200" y="64" text-anchor="middle" font-family="Fraunces,serif" font-size="26" font-weight="700" fill="#6f5b75">?</text>
+            <text x="200" y="95" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#9D8AA7">tap to reveal!</text>
           </svg>
-        </div>
+          </div>
         <div class="tut-h">hidden tea cups</div>
         <div class="tut-p">
-          Some tea cups conceal their contents.
-          Their tea level is revealed
-          only when the pour begins.
-          Trust your intuition —
-          or embrace the uncertainty.
+          Some cups hide their tea amount.
+
+<br><br>
+
+Their value appears only
+when selected.
+
+<br><br>
+
+Plan carefully.
         </div>
       </div>
       <div class="tut-nav">
@@ -1421,6 +1385,34 @@
         </div>
       </div>
 
+      <div
+  id="tutorial-link-wrap"
+  style="
+    display:none;
+    justify-content:center;
+    margin-bottom:8px;
+  "
+>
+
+  <button
+    id="tutorial-link-btn"
+    style="
+      border:none;
+      background:#efe7d9;
+      border:1px solid #d4c4ae;
+      color:#7d6b57;
+      border-radius:999px;
+      padding:7px 14px;
+      font-size:11px;
+      font-family:'DM Sans',sans-serif;
+      cursor:pointer;
+    "
+  >
+    📖 watch tutorial
+  </button>
+
+</div>
+
       <div id="insight-wrap">
 
         <button id="insight-btn">
@@ -1441,6 +1433,152 @@
         tap a tea cup — Tea Insight reveals the flow
       </div>
     </div>
+
+    <!-- TEA INSIGHT INTRO -->
+<div id="insight-intro">
+
+  <div class="insight-bg"></div>
+
+  <div class="insight-card">
+
+    <div class="insight-leaf">🍃</div>
+
+    <div class="insight-title">
+      Tea Insight
+    </div>
+
+    <div class="insight-copy">
+      Tea Insight reveals the future flow of tea.
+
+      <br><br>
+
+      You can turn it OFF anytime above the board.
+    </div>
+
+    <div class="insight-mini">
+
+      <div class="insight-row">
+        <div class="insight-chip">1st tap</div>
+        <div>preview trajectory 👁</div>
+      </div>
+
+      <div class="insight-row">
+        <div class="insight-chip">2nd tap</div>
+        <div>perform pour 🍵</div>
+      </div>
+
+    </div>
+
+    <button
+      class="insight-btn2"
+      onclick="closeInsightIntro()">
+
+      Begin Ceremony
+
+    </button>
+
+  </div>
+
+</div>
+
+<!-- GRAND MASTER INTRO -->
+
+<div id="gm-intro">
+
+  <div class="insight-bg"></div>
+
+  <div class="insight-card">
+
+    <div class="insight-leaf">🏆</div>
+
+    <div class="insight-title">
+      Grand Master Challenge
+    </div>
+
+    <div class="insight-copy">
+
+      You have reached the final ceremony.
+
+      <br><br>
+
+      Three tea cups remain hidden.
+
+      <br><br>
+
+      Reveal them by serving tea:
+
+    </div>
+
+    <div class="insight-mini">
+
+      <div class="insight-row">
+        <div class="insight-chip">4 Tea</div>
+        <div>Reveal First Cup</div>
+      </div>
+      
+      <div class="insight-row">
+        <div class="insight-chip">10 Tea</div>
+        <div>Reveal Second Cup</div>
+      </div>
+      
+      <div class="insight-row">
+        <div class="insight-chip">16 Tea</div>
+        <div>Reveal Third Cup</div>
+      </div>
+
+    </div>
+
+    <div class="insight-copy">
+
+      Only by uncovering all mysteries
+      can the ceremony be completed.
+
+    </div>
+
+    <button
+      class="insight-btn2"
+      onclick="closeGrandMasterIntro()">
+
+      Begin Grand Master Ceremony
+
+    </button>
+
+  </div>
+
+</div>
+
+<!-- MYSTERY CUP INTRO -->
+<div id="mystery-intro">
+  <div class="insight-bg"></div>
+  <div class="insight-card">
+    <div class="insight-leaf">🔮</div>
+    <div class="insight-title">Mystery Cups</div>
+    <div class="insight-copy">
+      This ceremony introduces hidden tea cups.
+      <br><br>
+      You cannot see how much tea is inside —
+      and their tea cannot be served until
+      they are uncovered.
+    </div>
+    <div class="insight-mini">
+      <div class="insight-row">
+        <div class="insight-chip">tap</div>
+        <div>reveals the hidden cup 👁</div>
+      </div>
+      <div class="insight-row">
+        <div class="insight-chip">then</div>
+        <div>tea can flow and be collected 🍵</div>
+      </div>
+    </div>
+    <div class="insight-copy">
+      An unrevealed cup cannot be collected from,
+      even if the gap falls on it.
+    </div>
+    <button class="insight-btn2" onclick="closeMysteryIntro()">
+      Begin Ceremony
+    </button>
+  </div>
+</div>
 
     <!-- CONFETTI -->
     <div id="confetti-wrap"><canvas id="confetti-canvas"></canvas></div>
@@ -1464,6 +1602,8 @@
     </div>
 
     <script>
+
+
       // ── ALL 100 LEVELS ──
       const LEVELS = [
         // LEVELS 1-25 (2x4 loop)
@@ -1914,7 +2054,7 @@
           loop: '2x5',
           gems: [2, 0, 0, 0, 0, 2, 6, 0, 0, 0],
           turns: 5,
-          target: 2,
+          target: 4,
           hidden: [0, 5],
         },
         {
@@ -1964,17 +2104,17 @@
           id: 61,
           name: 'Six Paths',
           loop: '2x5',
-          gems: [0, 2, 2, 0, 3, 0, 0, 0, 0, 0],
-          turns: 5,
-          target: 2,
+          gems: [0, 4, 4, 0, 3, 0, 0, 0, 0, 0],
+          turns: 4,
+          target: 4,
         },
         {
           id: 62,
           name: 'Five Arc',
           loop: '2x5',
-          gems: [7, 5, 5, 0, 5, 2, 0, 0, 0, 0],
+          gems: [7, 5, 5, 0, 5, 4, 0, 0, 0, 0],
           turns: 5,
-          target: 5,
+          target: 4,
           hidden: [0],
         },
         {
@@ -1989,9 +2129,9 @@
           id: 64,
           name: 'Wide Five',
           loop: '2x5',
-          gems: [0, 0, 0, 0, 0, 7, 2, 4, 2, 0],
+          gems: [0, 0, 0, 0, 0, 7, 4, 4, 4, 0],
           turns: 5,
-          target: 3,
+          target: 5,
         },
         {
           id: 65,
@@ -2005,17 +2145,17 @@
           id: 66,
           name: 'Loop Hunt',
           loop: '2x5',
-          gems: [0, 0, 5, 2, 0, 0, 0, 0, 3, 0],
-          turns: 5,
-          target: 3,
+          gems: [0, 0, 5, 4, 0, 0, 0, 0, 3, 0],
+          turns: 4,
+          target: 4,
         },
         {
           id: 67,
           name: 'Five Wide',
           loop: '2x5',
-          gems: [2, 4, 0, 0, 0, 2, 3, 0, 0, 0],
+          gems: [3, 4, 0, 0, 0, 3, 3, 0, 0, 0],
           turns: 4,
-          target: 2,
+          target: 3,
         },
         {
           id: 68,
@@ -2030,9 +2170,9 @@
           id: 69,
           name: 'Five Deep II',
           loop: '2x5',
-          gems: [0, 0, 0, 0, 0, 6, 3, 2, 4, 7],
+          gems: [0, 0, 0, 0, 0, 6, 3, 4, 4, 7],
           turns: 5,
-          target: 3,
+          target: 5,
         },
         {
           id: 70,
@@ -2046,25 +2186,25 @@
           id: 71,
           name: 'Five Turn',
           loop: '2x5',
-          gems: [3, 2, 4, 0, 0, 0, 0, 0, 0, 0],
-          turns: 5,
-          target: 2,
+          gems: [3, 4, 4, 0, 0, 0, 0, 0, 0, 0],
+          turns: 4,
+          target: 4,
         },
         {
           id: 72,
           name: 'Deep Hunt',
           loop: '2x5',
-          gems: [0, 3, 0, 0, 2, 3, 0, 0, 0, 0],
-          turns: 5,
-          target: 2,
+          gems: [0, 3, 0, 0, 4, 3, 0, 0, 0, 0],
+          turns: 4,
+          target: 3,
         },
         {
           id: 73,
           name: 'Four Arc',
           loop: '2x5',
-          gems: [2, 0, 0, 0, 0, 6, 0, 5, 0, 0],
-          turns: 5,
-          target: 2,
+          gems: [4, 0, 0, 0, 0, 6, 0, 5, 0, 0],
+          turns: 4,
+          target: 3,
         },
         {
           id: 74,
@@ -2088,17 +2228,17 @@
           id: 76,
           name: 'Wide Loop',
           loop: '2x5',
-          gems: [0, 0, 6, 3, 0, 0, 0, 2, 0, 0],
-          turns: 5,
-          target: 2,
+          gems: [0, 0, 6, 3, 0, 0, 0, 4, 0, 0],
+          turns: 4,
+          target: 3,
         },
         {
           id: 77,
           name: 'Arc Hunt',
           loop: '2x5',
-          gems: [2, 3, 5, 0, 0, 0, 0, 0, 3, 2],
-          turns: 5,
-          target: 3,
+          gems: [4, 3, 5, 0, 0, 0, 0, 0, 3, 4],
+          turns: 3,
+          target: 5,
         },
         {
           id: 78,
@@ -2113,9 +2253,9 @@
           id: 79,
           name: 'Loop Deep',
           loop: '2x5',
-          gems: [0, 0, 0, 0, 0, 0, 7, 2, 0, 2],
-          turns: 5,
-          target: 2,
+          gems: [0, 0, 0, 0, 0, 0, 7, 4, 0, 4],
+          turns: 4,
+          target: 4,
         },
         {
           id: 80,
@@ -2129,9 +2269,9 @@
           id: 81,
           name: 'Six Loop',
           loop: '2x6',
-          gems: [0, 0, 0, 5, 0, 5, 0, 2, 6, 3, 0, 0],
+          gems: [0, 0, 0, 5, 0, 5, 0, 4, 6, 3, 0, 0],
           turns: 5,
-          target: 4,
+          target: 7,
         },
         {
           id: 82,
@@ -2145,9 +2285,9 @@
           id: 83,
           name: 'Arc Six',
           loop: '2x6',
-          gems: [3, 4, 2, 0, 0, 0, 4, 0, 0, 4, 0, 0],
-          turns: 5,
-          target: 3,
+          gems: [3, 4, 4, 0, 0, 0, 4, 0, 0, 4, 0, 0],
+          turns: 4,
+          target: 4,
         },
         {
           id: 84,
@@ -2187,9 +2327,9 @@
           id: 88,
           name: 'Six Cross',
           loop: '2x6',
-          gems: [0, 0, 2, 5, 0, 0, 3, 4, 0, 0, 2, 0],
-          turns: 5,
-          target: 3,
+          gems: [0, 0, 4, 5, 0, 0, 3, 4, 0, 0, 4, 0],
+          turns: 4,
+          target: 5,
         },
         {
           id: 89,
@@ -2214,7 +2354,7 @@
           name: 'Six Deep',
           loop: '2x6',
           gems: [0, 0, 0, 0, 0, 0, 4, 0, 0, 5, 0, 3],
-          turns: 4,
+          turns: 3,
           target: 2,
         },
         {
@@ -2222,7 +2362,7 @@
           name: 'Six Path',
           loop: '2x6',
           gems: [3, 0, 0, 0, 0, 0, 0, 4, 0, 0, 5, 0],
-          turns: 5,
+          turns: 4,
           target: 3,
         },
         {
@@ -2230,7 +2370,7 @@
           name: 'Six Setup',
           loop: '2x6',
           gems: [0, 2, 0, 0, 4, 0, 0, 0, 0, 3, 0, 0],
-          turns: 4,
+          turns: 3,
           target: 2,
         },
         {
@@ -2238,15 +2378,15 @@
           name: 'Six Flow',
           loop: '2x6',
           gems: [0, 0, 0, 2, 0, 0, 4, 0, 0, 5, 0, 3],
-          turns: 5,
-          target: 3,
+          turns: 3,
+          target: 5,
         },
         {
           id: 95,
           name: 'Six Curve',
           loop: '2x6',
           gems: [0, 0, 0, 5, 3, 0, 0, 4, 0, 0, 0, 0],
-          turns: 5,
+          turns: 4,
           target: 3,
         },
         {
@@ -2254,7 +2394,7 @@
           name: 'Six Far',
           loop: '2x6',
           gems: [0, 4, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0],
-          turns: 5,
+          turns: 4,
           target: 3,
           hidden: [5],
         },
@@ -2263,8 +2403,8 @@
           name: 'Six Reach',
           loop: '2x6',
           gems: [5, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 5],
-          turns: 5,
-          target: 2,
+          turns: 4,
+          target: 5,
           hidden: [11],
         },
         {
@@ -2280,19 +2420,24 @@
           name: 'Six Climb',
           loop: '2x6',
           gems: [5, 6, 4, 3, 0, 0, 0, 0, 0, 0, 0, 5],
-          turns: 5,
-          target: 4,
+          turns: 4,
+          target: 7,
         },
         {
-          id: 100,
-          name: 'Grand Master',
-          loop: '2x6',
-          gems: [0, 4, 2, 3, 0, 5, 0, 0, 0, 0, 0, 0],
-          turns: 5,
-          target: 3,
-          hidden: [5, 2],
-          challenge: true,
-        },
+  id: 100,
+  name: 'Grand Master',
+  loop: '2x6',
+  gems: [3, 0, 0, 8, 0, 5, 0, 9, 0, 2, 7, 0],
+  hidden: [3, 7, 10],
+  turns: 5,
+  target: 19,
+  revealTargets: [
+    { score: 4, index: 3 },
+    { score: 10, index: 7 },
+    { score: 16, index: 10 }
+  ],
+  challenge: true
+},
       ];
 
       // Loop configs
@@ -2319,6 +2464,7 @@
       let picking = false;
       let lastTouchTime = 0;
       let teaInsight = true;
+      let teaInsightPreference = true;
       let mobilePreviewIdx = null;
 
 
@@ -2326,35 +2472,45 @@
 
       const DROP = 520;
       const dl = (ms) => new Promise((r) => setTimeout(r, ms));
+
       function ensureFlowDot() {
-        if (flowDot) return flowDot;
 
-        flowDot = document.createElement('div');
+if (flowDot) return flowDot;
 
-        flowDot.className = 'flow-dot';
+flowDot = document.createElement('div');
 
-        document.querySelector('.brd-wrap').appendChild(flowDot);
+flowDot.className = 'flow-dot';
 
-        return flowDot;
-      }
+flowDot.innerHTML = `
+<svg viewBox="0 0 40 40">
 
-      function activateGrooveSegment(seg) {
-        document.querySelectorAll('.groove').forEach((s) => {
-          s.classList.remove('active');
+  <path
+    d="
+      M20 5
+      C30 8 34 18 24 32
+      C16 30 8 20 20 5
+    "
+    fill="#86A878"
+  />
 
-          s.classList.add('fading');
+  <path
+    d="M20 7 L20 30"
+    stroke="#5D7155"
+    stroke-width="1.6"
+    stroke-linecap="round"
+  />
 
-          setTimeout(() => {
-            s.classList.remove('fading');
-          }, 220);
-        });
+</svg>
+`;
 
-        const el = document.querySelector(`.g-${seg}`);
+document
+  .querySelector('.brd-wrap')
+  .appendChild(flowDot);
 
-        if (el) {
-          el.classList.add('active');
-        }
-      }
+return flowDot;
+}
+
+      
 
       // STORAGE
       function loadProg() {
@@ -2426,6 +2582,16 @@
 
       // TUTORIAL
       let tStep = 0;
+      let tutorialReturnLevel = null;
+
+function openTutorialFromGame() {
+
+  tutorialReturnLevel = curLv ? curLv.id : null;
+
+  setTStep(0);
+
+  show('s-tut');
+}
       function setTStep(n) {
         tStep = n;
         document
@@ -2447,10 +2613,24 @@
         if (tStep > 0) setTStep(tStep - 1);
       }
       function finishTut() {
-        setTutDone();
-        show('s-map');
-        renderMap();
-      }
+
+setTutDone();
+
+if (tutorialReturnLevel) {
+
+  const returnLv = tutorialReturnLevel;
+
+  tutorialReturnLevel = null;
+
+  startLevel(returnLv);
+
+  return;
+}
+
+show('s-map');
+
+renderMap();
+}
 
       // MAP
       function renderMap() {
@@ -2507,6 +2687,19 @@
       function isHid(i) {
         return curLv.hidden && curLv.hidden.includes(i) && !hidRev[i];
       }
+
+      function isLockedMystery(i) {
+
+if (!curLv || curLv.id !== 100) {
+  return false;
+}
+
+return (
+  curLv.hidden &&
+  curLv.hidden.includes(i) &&
+  !hidRev[i]
+);
+}
 
       function buildSVG(loop, p, h) {
         const c = LCFG[loop],
@@ -2575,31 +2768,7 @@ opacity=".38"/>`;
         el.innerHTML = '';
         const c = LCFG[curLv.loop],
           p = getPos(curLv.loop, bW());
-        const grooveSize =
-          curLv.loop === '2x4' ? 10 : curLv.loop === '2x5' ? 12 : 14;
-        const gt = document.createElement('div');
-        gt.className = 'groove g-top';
-
-        const gr = document.createElement('div');
-        gr.className = 'groove g-right';
-
-        const gb = document.createElement('div');
-        gb.className = 'groove g-bottom';
-
-        const gl = document.createElement('div');
-        gl.className = 'groove g-left';
-
-        el.append(gt, gr, gb, gl);
-        [gt, gr, gb, gl].forEach((g) => {
-          if (
-            g.classList.contains('g-top') ||
-            g.classList.contains('g-bottom')
-          ) {
-            g.style.height = grooveSize + 'px';
-          } else {
-            g.style.width = grooveSize + 'px';
-          }
-        });
+        
 
         const h = p[c.half].y + c.vs + 16;
         el.style.height = h + 'px';
@@ -2666,8 +2835,14 @@ font-size:${fs}px;
 
           const isMystery = hid;
           if (isMystery) {
-            d.classList.add('mystery');
-          }
+
+d.classList.add('mystery');
+
+if (isLockedMystery(i)) {
+  d.style.opacity = '.55';
+  d.style.cursor = 'default';
+}
+}
 
           if (!hid && val === 0) {
             d.classList.add('empty');
@@ -2762,6 +2937,26 @@ font-size:${fs}px;
   opacity=".92"
 />
 
+<path
+  d="
+    M33 ${hid ? 82 : 80 - Math.max(0, previewVal * 6.2)}
+
+    Q50 ${hid ? 80 : 78 - Math.max(0, previewVal * 6.2)}
+      67 ${hid ? 80 : 80 - Math.max(0, previewVal * 6.2)}
+  "
+
+  fill="none"
+
+  stroke="rgba(255,255,255,.32)"
+  stroke-width="1.2"
+
+  stroke-linecap="round"
+
+  clip-path="url(#teaClip${i})"
+
+  opacity="${hid ? 0 : 1}"
+/>
+
 <!-- INNER CAVITY -->
 <ellipse
   cx="50"
@@ -2780,6 +2975,21 @@ font-size:${fs}px;
   fill="rgba(0,0,0,.06)"
 />
 
+<!-- TEA GLOSS -->
+<ellipse
+  cx="44"
+  cy="${hid ? 82 : 79 - Math.max(0, previewVal * 6.2)}"
+
+  rx="7"
+  ry="1.4"
+
+  fill="rgba(255,255,255,.18)"
+
+  clip-path="url(#teaClip${i})"
+
+  opacity="${hid ? 0 : .9}"
+/>
+
 <!-- TEA CLIP -->
 <defs>
   <clipPath id="teaClip${i}">
@@ -2796,10 +3006,12 @@ font-size:${fs}px;
   </clipPath>
 
   <linearGradient id="teaGrad${i}" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stop-color="#DDF5C8"/>
-    <stop offset="55%" stop-color="#94BD77"/>
-    <stop offset="100%" stop-color="#5A7C50"/>
-  </linearGradient>
+
+<stop offset="0%" stop-color="#F3F8E7"/>
+<stop offset="45%" stop-color="#BDD1A2"/>
+<stop offset="100%" stop-color="#7B936B"/>
+
+</linearGradient>
 </defs>
 
 
@@ -2822,8 +3034,8 @@ font-size:${fs}px;
     Q37 54 35 72
   "
   fill="none"
-  stroke="rgba(255,255,255,.42)"
-  stroke-width="4"
+  stroke="rgba(255,255,255,.55)"
+  stroke-width="3.2"
   stroke-linecap="round"
 />
 
@@ -2853,7 +3065,11 @@ font-size:${fs}px;
 
           d.append(label);
 
-          if (phase === 'pick' && (isMystery || val > 0)) {
+          if (
+  phase === 'pick' &&
+  !isLockedMystery(i) &&
+  (isMystery || val > 0)
+) {
             d.classList.add('pickable', 'breathing');
 
             d.onmouseenter = () => {
@@ -2874,25 +3090,44 @@ d.addEventListener('pointerdown', (e) => {
 
 e.preventDefault();
 
-if (phase !== 'pick' || picking) return;
+if (phase !== 'pick') return;
+
+if (picking) return;
 
 const mobile = window.innerWidth <= 768;
 
-if (
-  mobile &&
-  teaInsight &&
-  mobilePreviewIdx !== i
-) {
-  clearPreview();
-  mobilePreviewIdx = i;
+// DESKTOP
+if (!mobile) {
 
-  showPreview(i);
-
-  setSt('tap again to pour');
+  pickVault(i);
 
   return;
 }
+
+// MOBILE + TEA INSIGHT ON
+if (teaInsight && curLv.id <= 15) {
+
+  // first tap = preview
+  if (mobilePreviewIdx !== i) {
+  showPreview(i);
+  mobilePreviewIdx = i;
+  setSt('tap again to pour');
+  return;
+}
+
+  // second tap = execute
+  mobilePreviewIdx = null;
+
+  clearPreview();
+
+  pickVault(i);
+
+  return;
+}
+
+// TEA INSIGHT OFF
 clearPreview();
+
 mobilePreviewIdx = null;
 
 pickVault(i);
@@ -2967,9 +3202,10 @@ pickVault(i);
           dot.style.left = vCx(idx) + 'px';
           dot.style.top = vCy(idx) + 'px';
 
-          dot.style.transform = `translate(-50%,-50%) scale(${
-            1 + (i / path.length) * 0.08
-          })`;
+          dot.style.transform =
+  `translate(-50%,-50%)
+   rotate(${i * 18}deg)
+   scale(1.05)`;
 
           if (cup) {
             cup.classList.add('flowing');
@@ -3035,6 +3271,9 @@ if (teaInsight) {
 
 
       function clearPreview() {
+
+        activeFlowPath = [];
+        mobilePreviewIdx = null;
         
         document.querySelectorAll('.v').forEach((cup, idx) => {
           cup.classList.remove('preview', 'preview-final');
@@ -3146,8 +3385,6 @@ if (phase !== 'pick' || picking) return;
 
 picking = true;
 
-document.getElementById('board').style.pointerEvents = 'none';
-
 const hid = isHid(idx);
 
 const k = board[idx];
@@ -3156,12 +3393,11 @@ if (!hid && (!k || k <= 0)) {
 
   picking = false;
 
-  document.getElementById('board').style.pointerEvents = '';
-
   return;
 }
 
 phase = 'sowing';
+document.getElementById('board').style.pointerEvents = 'none';
 
 activeFlowPath = [];
 
@@ -3199,7 +3435,7 @@ for (let i = 0; i < k; i++) {
   activeFlowPath.push(cur);
 }
 
-// await animateFlow(activeFlowPath);
+await animateFlow(activeFlowPath);
 
 activeFlowPath = [];
 
@@ -3222,23 +3458,30 @@ const last = await dropGems(idx, k);
 await resolveEnd(last);
 }
 
-      function grooveFor(idx) {
-        const half = LCFG[curLv.loop].half;
-        const n = LCFG[curLv.loop].n;
-        if (idx < half) return 'top';
-        if (idx === half) return 'right';
-        if (idx === n - 1) return 'left';
-        return 'bottom';
-      }
+      
       async function dropGems(from, k) {
         let cur = from;
         for (let i = 0; i < k; i++) {
           cur = nxt(cur);
           board[cur]++;
-          vState[cur] = 'dropping';
-          renderBoard();
-          activateGrooveSegment(grooveFor(cur)); // ← after renderBoard, not before
-          await dl(DROP);
+
+vState[cur] = 'dropping';
+
+renderBoard();
+
+const cup =
+  document.querySelectorAll('.v')[cur];
+
+if (cup) {
+
+  cup.classList.add('flowing');
+
+  setTimeout(() => {
+    cup.classList.remove('flowing');
+  }, 250);
+}
+
+await dl(DROP);
           vState[cur] = 'trail';
           trail.push(cur);
           if (trail.length > 10) trail.shift();
@@ -3246,9 +3489,7 @@ await resolveEnd(last);
             if (vState[v] !== 'dropping') vState[v] = 'trail';
           });
         }
-        document.querySelectorAll('.groove').forEach((s) => {
-          s.classList.remove('active', 'fading');
-        });
+        
         return cur;
       }
       async function resolveEnd(lastV) {
@@ -3273,23 +3514,28 @@ await resolveEnd(last);
           await dl(480);
           drawArrow(nx, af, 'g');
           await dl(360);
-          if (board[af] > 0) {
-            const got = board[af];
-            board[af] = 0;
-            score += got;
-            if (isHid(af)) hidRev[af] = true;
-            vState[af] = 'collected';
-            renderBoard();
-            addBadge(af, `+${got} collected!`, 'collect');
-            setSt(`collected ${got} gems!`);
-            await dl(620);
-          } else {
-            vState[af] = 'nocollect';
-            renderBoard();
-            addBadge(af, 'also empty', 'miss');
-            setSt('both empty — no collect this pick');
-            await dl(420);
-          }
+          if (board[af] > 0 && !isHid(af)) {
+  const got = board[af];
+  board[af] = 0;
+  score += got;
+  vState[af] = 'collected';
+  renderBoard();
+  addBadge(af, `+${got} collected!`, 'collect');
+  setSt(`collected ${got} gems!`);
+  await dl(620);
+} else if (board[af] > 0 && isHid(af)) {
+  vState[af] = 'nocollect';
+  renderBoard();
+  addBadge(af, '🔒 sealed', 'miss');
+  setSt('mystery cup is sealed — reveal it first');
+  await dl(500);
+} else {
+  vState[af] = 'nocollect';
+  renderBoard();
+  addBadge(af, 'also empty', 'miss');
+  setSt('both empty — no collect this pick');
+  await dl(420);
+}
         } else {
           vState[nx] = 'nocollect';
           renderBoard();
@@ -3301,9 +3547,33 @@ await resolveEnd(last);
       }
 
       function endTurn() {
+        document.getElementById('board').style.pointerEvents = 'auto';
   picking = false;
+  mobilePreviewIdx = null;
   document.getElementById('board').style.pointerEvents = '';
   turnsLeft--;
+  if (curLv.revealTargets) {
+
+curLv.revealTargets.forEach(r => {
+
+  if (
+    score >= r.score &&
+    !hidRev[r.index]
+  ) {
+
+    hidRev[r.index] = true;
+
+    addBadge(
+      r.index,
+      'tea revealed',
+      'rev'
+    );
+
+  }
+
+});
+
+}
         if (
           turnsLeft <= 0 ||
           board.every((g) => g === 0) ||
@@ -3331,6 +3601,7 @@ await resolveEnd(last);
   picking = false;
   document.getElementById('board').style.pointerEvents = '';
   phase = 'done';
+  clearPreview();
         const lv = curLv;
         const win = score >= lv.target;
         const s = score >= lv.target ? 3 : 0;
@@ -3368,15 +3639,36 @@ await resolveEnd(last);
         const lv = LEVELS.find((l) => l.id === id);
         if (!lv || !unlocked(id)) return;
         curLv = lv;
-        teaInsight = lv.id <= 15;
+        if (lv.id <= 15) {
+
+teaInsight = teaInsightPreference;
+
+} else {
+
+teaInsight = false;
+}
 
 updateInsightUI();
+const tutWrap =
+  document.getElementById('tutorial-link-wrap');
+
+if (lv.id <= 15) {
+
+  tutWrap.style.display = 'flex';
+
+} else {
+
+  tutWrap.style.display = 'none';
+}
 
         board = [...lv.gems];
         score = 0;
         turnsLeft = lv.turns;
-        picking = false;
         phase = 'idle';
+        mobilePreviewIdx = null;
+        picking = false;
+        activeFlowPath = [];
+        clearPreview();
         vState = {};
         trail = [];
         hidRev = {};
@@ -3387,11 +3679,43 @@ updateInsightUI();
         const chal = document.getElementById('g-chal');
         chal.style.display = lv.challenge ? 'inline' : 'none';
         show('s-game');
+        document.getElementById('board').style.pointerEvents = 'auto';
+        
+
         setTimeout(() => {
-          phase = 'pick';
-          renderBoard();
-          setSt('tap a tea cup — each pour is one move');
-        }, 60);
+
+// Grand Master intro
+if (curLv.id === 100) {
+  phase = 'idle';
+  renderBoard();
+  showGrandMasterIntro();
+  return;
+}
+
+// Mystery cup intro (levels 25, 30, 41)
+if (shouldShowMysteryIntro()) {
+  phase = 'idle';
+  renderBoard();
+  showMysteryIntro();
+  return;
+}
+
+// Tea Insight intro
+if (shouldShowInsightIntro()) {
+  phase = 'idle';
+  renderBoard();
+  showInsightIntro();
+} else {
+  phase = 'pick';
+  renderBoard();
+  setSt(
+    teaInsight
+      ? 'tap a tea cup — Tea Insight reveals the flow'
+      : 'tap a tea cup to begin pouring'
+  );
+}
+
+}, 60);
       }
       function retryLevel() {
         hideLCO();
@@ -3402,6 +3726,77 @@ updateInsightUI();
         if (curLv && curLv.id < 100) startLevel(curLv.id + 1);
         else goMap();
       }
+
+      function shouldShowInsightIntro() {
+
+if (!curLv) return false;
+
+if (curLv.id > 3) return false;
+
+return teaInsightPreference;
+}
+
+function showInsightIntro() {
+
+document
+  .getElementById('insight-intro')
+  .classList.add('show');
+}
+
+function closeInsightIntro() {
+
+document
+  .getElementById('insight-intro')
+  .classList.remove('show');
+
+phase = 'pick';
+
+renderBoard();
+
+setSt(
+  teaInsight
+    ? 'tap a tea cup — Tea Insight reveals the flow'
+    : 'tap a tea cup to begin pouring'
+);
+}
+
+function showGrandMasterIntro() {
+
+document
+  .getElementById('gm-intro')
+  .classList.add('show');
+}
+
+function closeGrandMasterIntro() {
+
+document
+  .getElementById('gm-intro')
+  .classList.remove('show');
+
+phase = 'pick';
+
+renderBoard();
+
+setSt(
+  'Grand Master Challenge — uncover the hidden cups'
+);
+}
+
+function shouldShowMysteryIntro() {
+  if (!curLv) return false;
+  return curLv.id === 25 || curLv.id === 30 || curLv.id === 41;
+}
+
+function showMysteryIntro() {
+  document.getElementById('mystery-intro').classList.add('show');
+}
+
+function closeMysteryIntro() {
+  document.getElementById('mystery-intro').classList.remove('show');
+  phase = 'pick';
+  renderBoard();
+  setSt('mystery cups are sealed — tap to reveal before collecting');
+}
 
       // CONFETTI
       function startConf(isChallenge) {
@@ -3512,6 +3907,7 @@ updateInsightUI();
     if (curLv.id > 15) return;
 
     teaInsight = !teaInsight;
+    teaInsightPreference = teaInsight;
 
     updateInsightUI();
 
@@ -3523,6 +3919,9 @@ updateInsightUI();
       setSt('Tea Insight disabled');
     }
 };
+document
+  .getElementById('tutorial-link-btn')
+  .onclick = openTutorialFromGame;
 
       loadProg();
     </script>
